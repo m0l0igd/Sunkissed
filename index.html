@@ -1838,6 +1838,94 @@ var SECTIONS=[
 var CHARS_FLAT=[];SECTIONS.forEach(function(s){s.chars.forEach(function(c){CHARS_FLAT.push(c);});});
 
 // ── PLUMERIA FLOWER ───────────────────────────────────────────
+// ── CORAL DRAW FUNCTIONS (Coral Cove – stage 2) ───────────────────
+function drawBranchCoral(x,y,sz,col){
+  // Recursive-style branch using a loop
+  g.strokeStyle=col;g.lineCap='round';
+  function branch(bx,by,angle,len,depth){
+    if(depth<0||len<2)return;
+    var ex=bx+Math.cos(angle)*len,ey=by+Math.sin(angle)*len;
+    g.lineWidth=Math.max(1,depth*1.8);
+    g.beginPath();g.moveTo(bx,by);g.lineTo(ex,ey);g.stroke();
+    branch(ex,ey,angle-.45+Math.sin(_s+bx*.01)*.15,len*.68,depth-1);
+    branch(ex,ey,angle+.45+Math.cos(_s+by*.01)*.15,len*.68,depth-1);
+    if(depth>2)branch(ex,ey,angle+Math.sin(_s*.3)*.3,len*.55,depth-2);
+  }
+  branch(x,y,-Math.PI/2,sz,4);
+  // Polyp tips
+  g.fillStyle='rgba(255,180,200,.7)';
+  [-.45,0,.45].forEach(function(a){
+    var tx=x+Math.cos(-Math.PI/2+a)*sz*.88,ty=y+Math.sin(-Math.PI/2+a)*sz*.88;
+    g.beginPath();g.arc(tx,ty,sz*.07,0,6.28);g.fill();
+  });
+}
+function drawFanCoral(x,y,sz,col){
+  g.strokeStyle=col;g.lineWidth=1.5;g.lineCap='round';
+  // Stem
+  g.beginPath();g.moveTo(x,y);g.lineTo(x,y-sz*.25);g.stroke();
+  // Fan ribs
+  for(var i=0;i<11;i++){
+    var a=-Math.PI*.75+(i/10)*Math.PI*1.5;
+    var rx=x+Math.cos(a)*sz*.85,ry=y-sz*.25+Math.sin(a)*sz*.85;
+    g.lineWidth=1+((i===5)?1:0);
+    g.beginPath();g.moveTo(x,y-sz*.25);g.lineTo(rx,ry);g.stroke();
+  }
+  // Webbing arcs
+  g.lineWidth=.8;g.globalAlpha=.5;
+  for(var ri6=1;ri6<=4;ri6++){
+    var fr=sz*.2*ri6;
+    g.beginPath();
+    g.arc(x,y-sz*.25,fr,-Math.PI*.75,Math.PI*.75*.1*11-Math.PI*.75);
+    g.stroke();
+  }
+  g.globalAlpha=1;
+}
+function drawTubeCoral(x,y,sz,col){
+  var cols=[col,'#ff8888','#ffaacc','#ff60a0'];
+  var count=3+Math.floor(sz/10);
+  for(var ti=0;ti<count;ti++){
+    var tx=x+(ti-(count-1)/2)*sz*.38;
+    var th=sz*(.55+Math.sin(ti*1.3+_s*.01)*.2);
+    var tw=sz*.12;
+    var tc=cols[ti%4];
+    g.fillStyle=tc;
+    g.beginPath();g.roundRect(tx-tw,y-th,tw*2,th,tw*.7);g.fill();
+    g.fillStyle='rgba(255,255,255,.35)';
+    g.beginPath();g.ellipse(tx,y-th,tw*.6,tw*.5,0,0,6.28);g.fill();
+    // Rim
+    g.strokeStyle='rgba(0,0,0,.18)';g.lineWidth=.8;
+    g.beginPath();g.roundRect(tx-tw,y-th,tw*2,th,tw*.7);g.stroke();
+  }
+}
+function drawBrainCoral(x,y,sz,col){
+  g.fillStyle=col;
+  g.beginPath();g.arc(x,y-sz*.5,sz*.5,0,6.28);g.fill();
+  // Ridges
+  g.strokeStyle='rgba(0,0,0,.22)';g.lineWidth=1.2;
+  for(var bi2=0;bi2<6;bi2++){
+    var ba=bi2/6*Math.PI,boffx=Math.cos(ba+Math.PI*.5)*sz*.3;
+    g.beginPath();
+    g.arc(x+boffx,y-sz*.5,sz*.22,ba,ba+Math.PI*.8);
+    g.stroke();
+  }
+  g.fillStyle='rgba(255,200,180,.25)';
+  g.beginPath();g.arc(x-sz*.14,y-sz*.65,sz*.18,0,6.28);g.fill();
+}
+function drawBubbleCoral(x,y,sz,col){
+  var bcols=[col,'#ffbbdd','#ff99cc','#ffddee'];
+  var bubbles=[[0,0,1],[-.4,.1,.8],[.4,.05,.75],[-.2,-.3,.7],[.3,-.25,.65],[0,-.5,.6]];
+  bubbles.forEach(function(b,bi3){
+    var bx=x+b[0]*sz*.5,by=y-sz*.2+b[1]*sz*.5,br=sz*.22*b[2];
+    g.fillStyle=bcols[bi3%4];
+    g.beginPath();g.arc(bx,by,br,0,6.28);g.fill();
+    g.fillStyle='rgba(255,255,255,.4)';
+    g.beginPath();g.arc(bx-br*.25,by-br*.28,br*.3,0,6.28);g.fill();
+  });
+}
+// Dispatcher
+var _CORAL_FNS=[drawBranchCoral,drawFanCoral,drawTubeCoral,drawBrainCoral,drawBubbleCoral];
+function drawCoral(x,y,sz,type,col){_CORAL_FNS[type%5](x,y,sz,col);}
+
 function drawPlumeria(px,py,sz,col1,col2){
   for(var pi=0;pi<5;pi++){
     var pa=pi/5*Math.PI*2-Math.PI/2;
@@ -1852,7 +1940,7 @@ function drawPlumeria(px,py,sz,col1,col2){
 
 // ── GAME ENGINE VARIABLES ────────────────────────────────────
 var GR=0.52,WORLD=5500;
-var platforms=[],flowers=[],enemies=[],hearts=[],gems=[],pBlasts=[],gParticles=[],crates=[],barricades=[],powerups=[];
+var platforms=[],flowers=[],enemies=[],hearts=[],gems=[],pBlasts=[],gParticles=[],crates=[],barricades=[],powerups=[],corals=[];
 var P_dropping=0;// drop-through timer
 var P_magnet=0,P_speed=0,P_shield=0,P_dblBlast=0;// active powerup timers
 var keys={};
@@ -1909,7 +1997,7 @@ var ET=[
 
 // ── GENERATE STAGE ───────────────────────────────────────────
 function genStage(){
-  _s=42;platforms=[];flowers=[];enemies=[];hearts=[];gems=[];pBlasts=[];gParticles=[];
+  _s=42;platforms=[];flowers=[];enemies=[];hearts=[];gems=[];pBlasts=[];gParticles=[];corals=[];
   _gameOver=false;_win=false;crates=[];barricades=[];powerups=[];
   P_dropping=0;P_magnet=0;P_speed=0;P_shield=0;P_dblBlast=0;
   bossActive=false;bossDefeated=false;levelCompleteTimer=0;BOSS.alive=false;BOSS.projs=[];
@@ -1990,6 +2078,23 @@ function genStage(){
   for(var fi2=0;fi2<WORLD;fi2+=ri(80,160)){
     var pc=PCOLS[ri(0,4)];
     flowers.push({x:fi2,y:FLOOR,sz:ri(10,22),col1:pc[0],col2:pc[1]});
+  }
+  // Coral Cove (stage 2) – scatter coral across the world
+  if(currentLevel===1){
+    var CCOLS=['#ff6090','#ff9060','#ff60c0','#60d0d0','#ff8888','#c060e0','#ff4488'];
+    // Dense ground coral – one every ~60-120px
+    for(var ci6=60;ci6<WORLD-100;ci6+=ri(60,120)){
+      corals.push({x:ci6,y:FLOOR,sz:ri(18,42),type:ri(0,5),col:CCOLS[ri(0,7)]});
+    }
+    // Coral on top of platforms
+    platforms.forEach(function(p){
+      if(p.ground)return;
+      var count=Math.floor(p.w/50)+1;
+      for(var pci=0;pci<count;pci++){
+        var cx6=p.x+14+pci*(p.w/(count+1));
+        corals.push({x:cx6,y:p.y,sz:ri(12,26),type:ri(0,5),col:CCOLS[ri(0,7)]});
+      }
+    });
   }
   // Player start
   cam=0;
@@ -2092,6 +2197,11 @@ function drawWorld(){
     var icons={speed:'⚡',shield:'🛡',magnet:'🧲',dblBlast:'💕',life:'❤'};
     g.font='11px serif';g.textAlign='center';
     g.fillText(icons[pu.label]||'?',pusx,puy+4);
+  });
+  // Coral (Coral Cove stage 2)
+  corals.forEach(function(cl){
+    var csx=scx(cl.x);if(csx<-60||csx>W+60)return;
+    drawCoral(csx,cl.y,cl.sz,cl.type,cl.col);
   });
   // Plumeria flowers along ground & platforms
   flowers.forEach(function(fl){
