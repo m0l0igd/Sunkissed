@@ -5437,41 +5437,49 @@ function drawCharSelect(){
   g.strokeStyle='#ff9ed2';g.lineWidth=2;
   g.beginPath();g.roundRect(pbx,pby,180,44,12);g.stroke();
   lbl('▶  PLAY',W/2,pby+29,'#fff0f8',17);
-  // ── Scroll buttons ──────────────────────────────────────────
+  // ── Scroll buttons – drawn in clean state so clip never hides them ──
+  g.restore();g.save();// nuke any leftover clip/transform from card rendering
   var tot=totalSelectH();
   var _canUp=_scrollY<0;
   var _canDn=tot>H&&_scrollY>H-tot;
-  var _sbW=44,_sbH=44,_sbX=W-_sbW-8;
-  // UP button
-  if(_canUp){
-    var _ubY=H/2-_sbH-6;
-    var _ubHov=_mx>_sbX&&_mx<_sbX+_sbW&&_my>_ubY&&_my<_ubY+_sbH;
-    fRR(_sbX+2,_ubY+2,_sbW,_sbH,12,'rgba(0,0,0,.4)');
-    g.beginPath();g.roundRect(_sbX,_ubY,_sbW,_sbH,12);
-    g.fillStyle=_ubHov?'#cc3388':'rgba(180,40,120,.85)';g.fill();
-    g.strokeStyle='#ff9ed2';g.lineWidth=1.8;
-    g.beginPath();g.roundRect(_sbX,_ubY,_sbW,_sbH,12);g.stroke();
-    lbl('▲',_sbX+_sbW/2,_ubY+_sbH/2+6,'#fff',16);
-    _scUpBtn={x:_sbX,y:_ubY,w:_sbW,h:_sbH};
-  } else { _scUpBtn=null; }
-  // DOWN button
+  var _sbW=180,_sbH=42,_sbX=W/2-_sbW/2;
+  // DOWN button – pinned to very bottom
   if(_canDn){
-    var _dbY=H/2+6;
+    var _dbY=H-_sbH-4;
     var _dbHov=_mx>_sbX&&_mx<_sbX+_sbW&&_my>_dbY&&_my<_dbY+_sbH;
-    fRR(_sbX+2,_dbY+2,_sbW,_sbH,12,'rgba(0,0,0,.4)');
-    g.beginPath();g.roundRect(_sbX,_dbY,_sbW,_sbH,12);
-    g.fillStyle=_dbHov?'#cc3388':'rgba(180,40,120,.85)';g.fill();
-    g.strokeStyle='#ff9ed2';g.lineWidth=1.8;
-    g.beginPath();g.roundRect(_sbX,_dbY,_sbW,_sbH,12);g.stroke();
-    lbl('▼',_sbX+_sbW/2,_dbY+_sbH/2+6,'#fff',16);
+    // dark backing fade so button is always readable
+    var _dg=g.createLinearGradient(0,_dbY-20,0,H);
+    _dg.addColorStop(0,'rgba(10,2,18,0)');_dg.addColorStop(1,'rgba(10,2,18,.95)');
+    g.fillStyle=_dg;g.fillRect(0,_dbY-20,W,H-(_dbY-20));
+    g.fillStyle=_dbHov?'#ff2288':'#cc0066';
+    g.beginPath();g.roundRect(_sbX,_dbY,_sbW,_sbH,22);g.fill();
+    g.strokeStyle='#ffaadd';g.lineWidth=2.5;
+    g.beginPath();g.roundRect(_sbX,_dbY,_sbW,_sbH,22);g.stroke();
+    lbl('▼  MORE CHARACTERS  ▼',W/2,_dbY+_sbH/2+6,'#ffffff',13);
     _scDnBtn={x:_sbX,y:_dbY,w:_sbW,h:_sbH};
   } else { _scDnBtn=null; }
-  // Thin scroll track
+  // UP button – pinned to very top
+  if(_canUp){
+    var _ubY=4;
+    var _ubHov=_mx>_sbX&&_mx<_sbX+_sbW&&_my>_ubY&&_my<_ubY+_sbH;
+    var _ug=g.createLinearGradient(0,0,0,_ubY+_sbH+20);
+    _ug.addColorStop(0,'rgba(10,2,18,.95)');_ug.addColorStop(1,'rgba(10,2,18,0)');
+    g.fillStyle=_ug;g.fillRect(0,0,W,_ubY+_sbH+20);
+    g.fillStyle=_ubHov?'#ff2288':'#cc0066';
+    g.beginPath();g.roundRect(_sbX,_ubY,_sbW,_sbH,22);g.fill();
+    g.strokeStyle='#ffaadd';g.lineWidth=2.5;
+    g.beginPath();g.roundRect(_sbX,_ubY,_sbW,_sbH,22);g.stroke();
+    lbl('▲  SCROLL UP  ▲',W/2,_ubY+_sbH/2+6,'#ffffff',13);
+    _scUpBtn={x:_sbX,y:_ubY,w:_sbW,h:_sbH};
+  } else { _scUpBtn=null; }
+  // Thin scroll track on right edge
   if(tot>H){
     var barH=Math.max(30,H*(H/tot));
     var barY=(-_scrollY/tot)*H;
-    fRR(W-6,barY,4,barH,2,'rgba(255,150,200,.5)');
+    g.fillStyle='rgba(255,150,200,.5)';
+    g.beginPath();g.roundRect(W-6,barY,4,barH,2);g.fill();
   }
+  g.restore();
 }
 function cvCoords(clientX,clientY){
   var r=cv.getBoundingClientRect();
