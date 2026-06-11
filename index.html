@@ -1840,24 +1840,23 @@ var CHARS_FLAT=[];SECTIONS.forEach(function(s){s.chars.forEach(function(c){CHARS
 // ── PLUMERIA FLOWER ───────────────────────────────────────────
 // ── CORAL DRAW FUNCTIONS (Coral Cove – stage 2) ───────────────────
 function drawBranchCoral(x,y,sz,col){
-  // Recursive-style branch using a loop
   g.strokeStyle=col;g.lineCap='round';
-  function branch(bx,by,angle,len,depth){
-    if(depth<0||len<2)return;
-    var ex=bx+Math.cos(angle)*len,ey=by+Math.sin(angle)*len;
-    g.lineWidth=Math.max(1,depth*1.8);
-    g.beginPath();g.moveTo(bx,by);g.lineTo(ex,ey);g.stroke();
-    branch(ex,ey,angle-.45+Math.sin(_s+bx*.01)*.15,len*.68,depth-1);
-    branch(ex,ey,angle+.45+Math.cos(_s+by*.01)*.15,len*.68,depth-1);
-    if(depth>2)branch(ex,ey,angle+Math.sin(_s*.3)*.3,len*.55,depth-2);
+  // Iterative stack-based branch (no recursion = no silent crash)
+  var stack=[{bx:x,by:y,angle:-Math.PI/2,len:sz,depth:4}];
+  while(stack.length){
+    var b=stack.pop();
+    if(b.depth<0||b.len<3)continue;
+    var ex=b.bx+Math.cos(b.angle)*b.len,ey=b.by+Math.sin(b.angle)*b.len;
+    g.lineWidth=Math.max(1,b.depth*1.8);
+    g.beginPath();g.moveTo(b.bx,b.by);g.lineTo(ex,ey);g.stroke();
+    stack.push({bx:ex,by:ey,angle:b.angle-.42,len:b.len*.68,depth:b.depth-1});
+    stack.push({bx:ex,by:ey,angle:b.angle+.42,len:b.len*.68,depth:b.depth-1});
+    if(b.depth>2)stack.push({bx:ex,by:ey,angle:b.angle-.05,len:b.len*.5,depth:b.depth-2});
   }
-  branch(x,y,-Math.PI/2,sz,4);
-  // Polyp tips
-  g.fillStyle='rgba(255,180,200,.7)';
-  [-.45,0,.45].forEach(function(a){
-    var tx=x+Math.cos(-Math.PI/2+a)*sz*.88,ty=y+Math.sin(-Math.PI/2+a)*sz*.88;
-    g.beginPath();g.arc(tx,ty,sz*.07,0,6.28);g.fill();
-  });
+  g.fillStyle='rgba(255,200,220,.85)';
+  g.beginPath();g.arc(x-sz*.2,y-sz*.9,sz*.08,0,6.28);g.fill();
+  g.beginPath();g.arc(x+sz*.25,y-sz*.85,sz*.07,0,6.28);g.fill();
+  g.beginPath();g.arc(x,y-sz,sz*.09,0,6.28);g.fill();
 }
 function drawFanCoral(x,y,sz,col){
   g.strokeStyle=col;g.lineWidth=1.5;g.lineCap='round';
@@ -2082,17 +2081,17 @@ function genStage(){
   // Coral Cove (stage 2) – scatter coral across the world
   if(currentLevel===1){
     var CCOLS=['#ff6090','#ff9060','#ff60c0','#60d0d0','#ff8888','#c060e0','#ff4488'];
-    // Dense ground coral – one every ~60-120px
-    for(var ci6=60;ci6<WORLD-100;ci6+=ri(60,120)){
-      corals.push({x:ci6,y:FLOOR,sz:ri(18,42),type:ri(0,5),col:CCOLS[ri(0,7)]});
+    // Dense ground coral – one every ~40-80px, very large
+    for(var ci6=40;ci6<WORLD-80;ci6+=ri(40,80)){
+      corals.push({x:ci6,y:FLOOR,sz:ri(55,95),type:ri(0,5),col:CCOLS[ri(0,7)]});
     }
-    // Coral on top of platforms
+    // Big coral on every platform
     platforms.forEach(function(p){
       if(p.ground)return;
-      var count=Math.floor(p.w/50)+1;
+      var count=Math.max(2,Math.floor(p.w/55));
       for(var pci=0;pci<count;pci++){
-        var cx6=p.x+14+pci*(p.w/(count+1));
-        corals.push({x:cx6,y:p.y,sz:ri(12,26),type:ri(0,5),col:CCOLS[ri(0,7)]});
+        var cx6=p.x+20+pci*((p.w-40)/(Math.max(1,count-1)));
+        corals.push({x:cx6,y:p.y,sz:ri(30,55),type:ri(0,5),col:CCOLS[ri(0,7)]});
       }
     });
   }
@@ -2197,11 +2196,6 @@ function drawWorld(){
     var icons={speed:'⚡',shield:'🛡',magnet:'🧲',dblBlast:'💕',life:'❤'};
     g.font='11px serif';g.textAlign='center';
     g.fillText(icons[pu.label]||'?',pusx,puy+4);
-  });
-  // Coral (Coral Cove stage 2)
-  corals.forEach(function(cl){
-    var csx=scx(cl.x);if(csx<-60||csx>W+60)return;
-    drawCoral(csx,cl.y,cl.sz,cl.type,cl.col);
   });
   // Plumeria flowers along ground & platforms
   flowers.forEach(function(fl){
@@ -3526,6 +3520,11 @@ function loop(){requestAnimationFrame(loop);tick++;
   drawBG();
   drawWorld();
   drawBlasts();
+  // Coral Cove stage 2 — drawn after ground so it's always on top
+  corals.forEach(function(cl){
+    var csx=scx(cl.x);if(csx<-80||csx>W+80)return;
+    drawCoral(csx,cl.y,cl.sz,cl.type,cl.col);
+  });
   drawEnemies();
   drawPlayer();
   drawParticles();
