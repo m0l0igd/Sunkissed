@@ -910,6 +910,7 @@ var _titleLbBx=0,_titleLbBy=0,_titleLbBw=96,_titleLbBh=34;
 var _titleUnBx=0,_titleUnBy=0,_titleUnBw=96,_titleUnBh=34;
 var _titleAccBx=0,_titleAccBy=0,_titleAccBw=96,_titleAccBh=34;
 var _scCards=[],_scPlayBx=0,_scPlayBy=0,_scScrollY=0,_scDragY=0;
+var _scUpBtn=null,_scDnBtn=null;// scroll button rects
 var _s=7;function rnd(){_s=(_s*1664525+1013904223)|0;return((_s>>>0)/4294967295);}
 function ri(a,b){return Math.floor(rnd()*(b-a)+a);}
 function fRR(x,y,w,h,r,c){g.beginPath();g.roundRect(x,y,w,h,r);g.fillStyle=c;g.fill();}
@@ -5436,8 +5437,36 @@ function drawCharSelect(){
   g.strokeStyle='#ff9ed2';g.lineWidth=2;
   g.beginPath();g.roundRect(pbx,pby,180,44,12);g.stroke();
   lbl('▶  PLAY',W/2,pby+29,'#fff0f8',17);
-  // scroll indicator if needed
+  // ── Scroll buttons ──────────────────────────────────────────
   var tot=totalSelectH();
+  var _canUp=_scrollY<0;
+  var _canDn=tot>H&&_scrollY>H-tot;
+  var _sbW=44,_sbH=44,_sbX=W-_sbW-8;
+  // UP button
+  if(_canUp){
+    var _ubY=H/2-_sbH-6;
+    var _ubHov=_mx>_sbX&&_mx<_sbX+_sbW&&_my>_ubY&&_my<_ubY+_sbH;
+    fRR(_sbX+2,_ubY+2,_sbW,_sbH,12,'rgba(0,0,0,.4)');
+    g.beginPath();g.roundRect(_sbX,_ubY,_sbW,_sbH,12);
+    g.fillStyle=_ubHov?'#cc3388':'rgba(180,40,120,.85)';g.fill();
+    g.strokeStyle='#ff9ed2';g.lineWidth=1.8;
+    g.beginPath();g.roundRect(_sbX,_ubY,_sbW,_sbH,12);g.stroke();
+    lbl('▲',_sbX+_sbW/2,_ubY+_sbH/2+6,'#fff',16);
+    _scUpBtn={x:_sbX,y:_ubY,w:_sbW,h:_sbH};
+  } else { _scUpBtn=null; }
+  // DOWN button
+  if(_canDn){
+    var _dbY=H/2+6;
+    var _dbHov=_mx>_sbX&&_mx<_sbX+_sbW&&_my>_dbY&&_my<_dbY+_sbH;
+    fRR(_sbX+2,_dbY+2,_sbW,_sbH,12,'rgba(0,0,0,.4)');
+    g.beginPath();g.roundRect(_sbX,_dbY,_sbW,_sbH,12);
+    g.fillStyle=_dbHov?'#cc3388':'rgba(180,40,120,.85)';g.fill();
+    g.strokeStyle='#ff9ed2';g.lineWidth=1.8;
+    g.beginPath();g.roundRect(_sbX,_dbY,_sbW,_sbH,12);g.stroke();
+    lbl('▼',_sbX+_sbW/2,_dbY+_sbH/2+6,'#fff',16);
+    _scDnBtn={x:_sbX,y:_dbY,w:_sbW,h:_sbH};
+  } else { _scDnBtn=null; }
+  // Thin scroll track
   if(tot>H){
     var barH=Math.max(30,H*(H/tot));
     var barY=(-_scrollY/tot)*H;
@@ -5449,6 +5478,14 @@ function cvCoords(clientX,clientY){
   return{x:(clientX-r.left)*(cv.width/r.width),y:(clientY-r.top)*(cv.height/r.height)};
 }
 function handleSelectClick(cx,cy){
+  // Scroll buttons
+  var _scrollAmt=90;
+  if(_scUpBtn&&cx>_scUpBtn.x&&cx<_scUpBtn.x+_scUpBtn.w&&cy>_scUpBtn.y&&cy<_scUpBtn.y+_scUpBtn.h){
+    _scrollY=Math.min(0,_scrollY+_scrollAmt);return;
+  }
+  if(_scDnBtn&&cx>_scDnBtn.x&&cx<_scDnBtn.x+_scDnBtn.w&&cy>_scDnBtn.y&&cy<_scDnBtn.y+_scDnBtn.h){
+    var _tot2=totalSelectH();_scrollY=Math.max(H-_tot2,_scrollY-_scrollAmt);return;
+  }
   _scCards.forEach(function(c,i){
     if(c&&cx>c.x&&cx<c.x+c.w&&cy>c.y&&cy<c.y+c.h)selectedChar=i;
   });
@@ -5635,6 +5672,12 @@ function loop(){requestAnimationFrame(loop);tick++;
 // ── INPUT ─────────────────────────────────────────────────────
 document.addEventListener('keydown',function(e){
   if(state==='title'&&(e.code==='Space'||e.code==='Enter')){state='select';}
+  if(state==='select'&&(e.code==='ArrowDown'||e.code==='KeyS')){
+    var _tot3=totalSelectH();_scrollY=Math.max(H-_tot3,_scrollY-90);e.preventDefault();
+  }
+  if(state==='select'&&(e.code==='ArrowUp'||e.code==='KeyW')){
+    _scrollY=Math.min(0,_scrollY+90);e.preventDefault();
+  }
   if(state==='play'&&(e.code==='KeyP'||e.code==='Escape')){
     _paused=!_paused;
     if(!_paused&&_pauseTempChar>=0){selectedChar=_pauseTempChar;_pauseTempChar=-1;}
