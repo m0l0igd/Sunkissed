@@ -1042,6 +1042,92 @@ function drawBG(){
   sky.addColorStop(1,_sb);
   g.fillStyle=sky;g.fillRect(0,0,W,FLOOR);
 
+  // ★ STAGE 3 SUNSET SANDS — rich dramatic sky override
+  if(state==='play'&&currentLevel===2){
+    // Deep multi-stop sunset gradient
+    var ssky=g.createLinearGradient(0,0,0,FLOOR);
+    ssky.addColorStop(0,'#1a0830');    // deep violet at top
+    ssky.addColorStop(.18,'#50106a'); // purple
+    ssky.addColorStop(.40,'#c03020'); // deep crimson
+    ssky.addColorStop(.62,'#e85010'); // burnt orange
+    ssky.addColorStop(.80,'#f08820'); // amber
+    ssky.addColorStop(.95,'#f8c040'); // golden horizon
+    ssky.addColorStop(1,'#fde080');   // pale gold at waterline
+    g.fillStyle=ssky;g.fillRect(0,0,W,FLOOR);
+    // Wide horizon glow
+    var hglow=g.createLinearGradient(0,FLOOR*.7,0,FLOOR);
+    hglow.addColorStop(0,'rgba(255,160,30,0)');
+    hglow.addColorStop(1,'rgba(255,200,60,.45)');
+    g.fillStyle=hglow;g.fillRect(0,FLOOR*.7,W,FLOOR*.3);
+    // Large setting sun near horizon
+    var ssx=W*.62,ssy=FLOOR*.82;
+    // Outer corona
+    var scor=g.createRadialGradient(ssx,ssy,0,ssx,ssy,W*.22);
+    scor.addColorStop(0,'rgba(255,220,80,.55)');
+    scor.addColorStop(.35,'rgba(255,120,20,.25)');
+    scor.addColorStop(1,'rgba(200,50,0,0)');
+    g.fillStyle=scor;g.fillRect(0,ssy-W*.22,W,W*.44);
+    // Sun disc
+    fC(ssx,ssy,38,'#ff8010');fC(ssx,ssy,28,'#ffb030');fC(ssx,ssy,18,'#ffe060');
+    // Long dramatic rays
+    g.strokeStyle='rgba(255,180,40,.22)';g.lineWidth=3;
+    for(var sri=0;sri<20;sri++){
+      var sra=sri/20*6.28+tick*.003;
+      g.beginPath();
+      g.moveTo(ssx+Math.cos(sra)*44,ssy+Math.sin(sra)*44);
+      g.lineTo(ssx+Math.cos(sra)*(W*.35+Math.sin(tick*.02+sri)*20),
+               ssy+Math.sin(sra)*(W*.35+Math.cos(tick*.02+sri)*20));
+      g.stroke();
+    }
+    // Dramatic clouds — deep purple/orange silhouettes
+    var sclouds=[
+      {x:.08,y:.12,w:180,h:40},{x:.28,y:.06,w:140,h:30},
+      {x:.55,y:.15,w:200,h:45},{x:.78,y:.08,w:160,h:35},
+      {x:.18,y:.28,w:120,h:28},{x:.65,y:.24,w:150,h:32}
+    ];
+    sclouds.forEach(function(cl){
+      var cx2=cl.x*W+Math.sin(tick*.004+cl.x*10)*8;
+      var cg2=g.createLinearGradient(cx2,cl.y*FLOOR,cx2,cl.y*FLOOR+cl.h);
+      cg2.addColorStop(0,'rgba(80,20,100,.75)');
+      cg2.addColorStop(1,'rgba(200,80,20,.3)');
+      g.fillStyle=cg2;
+      g.beginPath();g.ellipse(cx2,cl.y*FLOOR,cl.w/2,cl.h/2,0,0,6.28);g.fill();
+      // Rim lit by sun
+      g.strokeStyle='rgba(255,160,40,.4)';g.lineWidth=1.5;
+      g.beginPath();g.ellipse(cx2,cl.y*FLOOR,cl.w/2,cl.h/2,0,Math.PI,0);g.stroke();
+    });
+    // Palm tree silhouettes (world-relative so they scroll)
+    var palms=[300,900,1600,2400,3100,3800,4500];
+    palms.forEach(function(wx,pi){
+      var px2=scx(wx);if(px2<-60||px2>W+60)return;
+      var ph=80+pi%3*20;// height varies
+      // Trunk
+      g.fillStyle='rgba(10,4,2,.9)';
+      g.beginPath();
+      g.moveTo(px2-6,FLOOR);
+      g.bezierCurveTo(px2-4,FLOOR-ph*.4,px2+8,FLOOR-ph*.7,px2+4,FLOOR-ph);
+      g.bezierCurveTo(px2+2,FLOOR-ph,px2-2,FLOOR-ph,px2-4,FLOOR-ph);
+      g.bezierCurveTo(px2-8,FLOOR-ph*.7,px2+4,FLOOR-ph*.4,px2+6,FLOOR);
+      g.closePath();g.fill();
+      // Fronds
+      var fronds=[[-1.1,-.4],[-0.7,-.85],[-.1,-1.1],[.55,-.9],[1.05,-.45]];
+      fronds.forEach(function(f){
+        g.strokeStyle='rgba(10,4,2,.85)';g.lineWidth=3;g.lineCap='round';
+        var fx=px2+4+f[0]*38,fy=FLOOR-ph+f[1]*32;
+        g.beginPath();g.moveTo(px2+4,FLOOR-ph);g.lineTo(fx,fy);g.stroke();
+        // Leaf spray
+        g.lineWidth=1.5;
+        for(var li=-2;li<=2;li++){
+          var la=Math.atan2(fy-(FLOOR-ph),fx-(px2+4))+li*.2;
+          g.beginPath();
+          g.moveTo(fx,fy);
+          g.lineTo(fx+Math.cos(la)*18,fy+Math.sin(la)*12);
+          g.stroke();
+        }
+      });
+    });
+  }
+
   // —— Dreamy haze band near horizon
   var haze=g.createLinearGradient(0,FLOOR*.65,0,FLOOR);
   haze.addColorStop(0,'rgba(255,220,180,0)');
