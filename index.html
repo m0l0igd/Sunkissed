@@ -414,6 +414,7 @@ if(!g.roundRect)g.roundRect=function(x,y,w,h,r){r=Math.min(+r||0,w/2,h/2);
   this.closePath();return this;};
 var tick=0,state='title',selectedChar=0,selHover=-1,_mx=0,_my=0;
 var currentLevel=0,bossActive=false,bossDefeated=false,levelCompleteTimer=0,_paused=false;
+var _landTimer=0,_wasOnGround=false;// animation helpers
 var _pauseHoverResume=false,_pauseHoverMenu=false,_pauseSelHover=-1,_pauseScroll=0;
 var BOSS={x:0,y:0,vx:2,vy:0,w:90,h:110,hp:0,maxHp:0,alive:false,dead:false,
   hitTimer:0,deathTimer:0,timer:0,dir:-1,phase2:false,projs:[]};
@@ -2949,6 +2950,34 @@ function drawPlayer(){
   g.translate(sx3+P.w/2,P.y+P.h);
   if(P.dir<0)g.scale(-1,1);
   g.scale(0.84,0.84);
+  // ★ Squash • Stretch • Bob • Lean animation
+  var aTy=0,aLean=0,aSx=1,aSy=1;
+  if(_landTimer>0){
+    // Land squash — wide & short
+    var lf=_landTimer/9;
+    aSx=1+lf*0.24;aSy=1-lf*0.18;aTy=lf*7;
+  } else if(P.onGround){
+    if(Math.abs(P.vx)>0.8){
+      // Running: vertical step bob + forward lean
+      var stepSin=Math.abs(Math.sin(tick*0.28));
+      aTy=0-stepSin*6;
+      aSx=1+stepSin*0.06;aSy=1-stepSin*0.07;
+      aLean=0.11;// leans forward (dir already flipped by scale)
+    } else {
+      // Idle: gentle breathing sway
+      aTy=Math.sin(tick*0.055)*2.8;
+      aLean=Math.sin(tick*0.042)*0.03;
+    }
+  } else {
+    // Airborne squash & stretch
+    if(P.vy<-4){aSx=0.86;aSy=1.16;aTy=-3;}      // fast rise — tall & thin
+    else if(P.vy<0){aSx=0.92;aSy=1.08;}           // slow rise
+    else if(P.vy<4){aSx=1.05;aSy=0.96;}           // peak/start falling
+    else{aSx=1.10;aSy=0.91;aTy=3;}                // fast fall — wide & short
+  }
+  g.translate(0,aTy);
+  g.rotate(aLean);
+  g.scale(aSx,aSy);
   ch.draw(0,-42);
   g.restore();
   // Draw equipped accessory on player
@@ -3464,6 +3493,10 @@ function update(){
   if(P.y>H+30){P.dead=true;P.deathVy=-8;}
   if(P.invTimer>0)P.invTimer--;
   if(P.blastCd>0)P.blastCd--;
+  // Landing squash detection
+  if(!_wasOnGround&&P.onGround){_landTimer=9;}
+  _wasOnGround=P.onGround;
+  if(_landTimer>0)_landTimer--;
 
   // Blasts
   for(var bi=pBlasts.length-1;bi>=0;bi--){
