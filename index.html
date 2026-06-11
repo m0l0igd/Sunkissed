@@ -3209,7 +3209,19 @@ function drawPlayer(){
     g.globalAlpha=1;
   }
   g.save();
-  g.translate(sx3+P.w/2,P.y+P.h);
+  // Mew levitation – float 14px above ground with gentle sine bob
+  var _mewFloat=(ch.name==='Mew')?(-14+Math.sin(tick*0.045)*4):0;
+  if(ch.name==='Mew'&&P.onGround){
+    // Psychic shimmer halo on the ground beneath her
+    var _msx=sx3+P.w/2;
+    g.save();g.globalAlpha=0.22+Math.sin(tick*0.08)*0.08;
+    var _msg=g.createRadialGradient(_msx,P.y+P.h-2,0,_msx,P.y+P.h-2,18);
+    _msg.addColorStop(0,'rgba(180,100,255,.9)');
+    _msg.addColorStop(1,'rgba(140,60,255,0)');
+    g.fillStyle=_msg;g.beginPath();g.ellipse(_msx,P.y+P.h-2,18,6,0,0,6.28);g.fill();
+    g.restore();
+  }
+  g.translate(sx3+P.w/2,P.y+P.h+_mewFloat);
   if(P.dir<0)g.scale(-1,1);
   g.scale(0.84,0.84);
   // Compute per-limb animation state for character draw fns
