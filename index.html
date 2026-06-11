@@ -2617,9 +2617,10 @@ function drawOverlay(){
   var cx4=W/2,ow=260,oh=140,ox=cx4-ow/2,oy=H/2-oh/2;
   if(_gameOver||_win){
     if(!_lbSaved){lbSubmit(P.score,totalShells);_lbSaved=true;}
-    fRR(ox,oy-10,ow,oh+50,16,'rgba(20,4,28,.92)');
+    var extraH=_win?38:0;
+    fRR(ox,oy-10,ow,oh+50+extraH,16,'rgba(20,4,28,.92)');
     g.strokeStyle=_win?'#ffcc44':'#c9956c';g.lineWidth=1.5;
-    g.beginPath();g.roundRect(ox,oy-10,ow,oh+50,16);g.stroke();
+    g.beginPath();g.roundRect(ox,oy-10,ow,oh+50+extraH,16);g.stroke();
     lbl(_win?'YOU WIN!':'GAME OVER',cx4,oy+22,_win?'#ffe090':'#e8a070',20);
     lbl('Score: '+P.score+'   Shells: '+totalShells,cx4,oy+46,'#f5e0c8',11);
     // Play Again button
@@ -2640,6 +2641,19 @@ function drawOverlay(){
     fRR(bx5,by5,bw5,bh5,8,hov5?'rgba(50,30,10,.9)':'rgba(35,18,5,.8)');
     g.strokeStyle='rgba(200,148,100,.4)';g.lineWidth=1;g.beginPath();g.roundRect(bx5,by5,bw5,bh5,8);g.stroke();
     lbl('MAIN MENU',bx5+bw5/2,by5+19,'#f5e0c8',10);
+    // START FROM BEGINNING — only on win screen
+    var bx6=0,by6=0,bw6=148,bh6=30;
+    if(_win){
+      bx6=cx4-bw6/2;by6=by5+36;
+      var hov6=_mx>bx6&&_mx<bx6+bw6&&_my>by6&&_my<by6+bh6;
+      var sg6=g.createLinearGradient(bx6,by6,bx6+bw6,by6+bh6);
+      sg6.addColorStop(0,hov6?'#2a8a50':'#1a6038');
+      sg6.addColorStop(1,hov6?'#40aa70':'#2a8050');
+      fRR(bx6,by6,bw6,bh6,9,'rgba(0,0,0,.25)');
+      g.beginPath();g.roundRect(bx6,by6,bw6,bh6,9);g.fillStyle=sg6;g.fill();
+      g.strokeStyle='rgba(120,240,160,.55)';g.lineWidth=1;g.beginPath();g.roundRect(bx6,by6,bw6,bh6,9);g.stroke();
+      lbl('↺ START FROM BEGINNING',bx6+bw6/2,by6+20,'#d0ffe0',11);
+    }
     if(_lastClick.fresh){_lastClick.fresh=false;
       if(_lastClick.x>bx3&&_lastClick.x<bx3+bw3&&_lastClick.y>by3&&_lastClick.y<by3+bh3){
         _lbSaved=false;genStage();state='play';switchToGameMusic();
@@ -2649,6 +2663,10 @@ function drawOverlay(){
       }
       if(_lastClick.x>bx5&&_lastClick.x<bx5+bw5&&_lastClick.y>by5&&_lastClick.y<by5+bh5){
         _lbSaved=false;_gameOver=false;_win=false;state='title';switchToIntroMusic();
+      }
+      if(_win&&_lastClick.x>bx6&&_lastClick.x<bx6+bw6&&_lastClick.y>by6&&_lastClick.y<by6+bh6){
+        currentLevel=0;_lbSaved=false;_gameOver=false;_win=false;
+        genStage();state='play';switchToGameMusic();
       }
     }
   }
