@@ -3986,8 +3986,9 @@ function loop(){requestAnimationFrame(loop);tick++;
   }
   drawSpecialFX();
   drawHUD();
-  // Level complete banner
+  // Level complete banner + PINKY UP DANCE
   if(levelCompleteTimer>0){
+    var danceT=200-levelCompleteTimer; // 0→200 elapsed
     var fade=Math.min(1,levelCompleteTimer/30);
     g.globalAlpha=fade;
     fRR(W/2-160,H/2-36,320,72,14,'rgba(20,4,28,.92)');
@@ -3995,6 +3996,157 @@ function loop(){requestAnimationFrame(loop);tick++;
     lbl('✨ LEVEL COMPLETE! ✨',W/2,H/2-12,'#ffcc44',18);
     lbl('Next: Level '+(currentLevel+2)+' — '+nc,W/2,H/2+16,'#ffccee',11);
     g.globalAlpha=1;
+    // ★ Pinky Up Dance (Katseye)
+    (function(){
+      var cx=W/2,cy=H/2+90;
+      var bounce=Math.sin(danceT*.18)*7;
+      var sway=Math.sin(danceT*.09)*10;
+      var shimmy=Math.sin(danceT*.22)*5;
+      var hipRot=Math.sin(danceT*.11)*.08;
+      // Spotlight glow
+      var spot=g.createRadialGradient(cx,cy,0,cx,cy,110);
+      spot.addColorStop(0,'rgba(255,220,120,.22)');
+      spot.addColorStop(1,'rgba(255,180,80,0)');
+      g.fillStyle=spot;g.fillRect(cx-110,cy-110,220,220);
+      // Floating music notes
+      ['♪','♫','♥','✨'].forEach(function(note,ni){
+        var na=danceT*.04+ni*1.57;
+        var nx=cx+Math.cos(na)*65,ny=cy-50-((danceT*1.1+ni*40)%80);
+        g.globalAlpha=(1-((danceT*1.1+ni*40)%80)/80)*fade;
+        g.font='13px serif';g.textAlign='center';
+        g.fillStyle=['#ffcc44','#ff88cc','#88eecc','#ffaadd'][ni];
+        g.fillText(note,nx,ny);
+      });
+      g.globalAlpha=fade;
+      // --- Body ---
+      var bx=cx+sway,by=cy+bounce;
+      // Dress / skirt (wide A-line, swishing with sway)
+      g.fillStyle='#ff70c0';
+      g.beginPath();
+      g.moveTo(bx-8,by-18);
+      g.bezierCurveTo(bx-22+shimmy,by+8,bx-28+shimmy,by+28,bx-26+shimmy,by+38);
+      g.lineTo(bx+26-shimmy,by+38);
+      g.bezierCurveTo(bx+28-shimmy,by+28,bx+22-shimmy,by+8,bx+8,by-18);
+      g.closePath();g.fill();
+      // Dress shine
+      g.fillStyle='rgba(255,200,240,.35)';
+      g.beginPath();
+      g.moveTo(bx-4,by-16);g.lineTo(bx+4,by-16);
+      g.bezierCurveTo(bx+10,by+4,bx+8,by+20,bx+2,by+30);
+      g.bezierCurveTo(bx-4,by+20,bx-6,by+4,bx-4,by-16);
+      g.closePath();g.fill();
+      // Torso
+      g.fillStyle='#f0b0d8';
+      g.beginPath();g.roundRect(bx-9,by-38,18,22,5);g.fill();
+      // Head
+      g.fillStyle='#f8cfa8';
+      g.beginPath();g.arc(bx,by-52,16,0,6.28);g.fill();
+      // Hair (dark, bouncy ponytail)
+      g.fillStyle='#28100a';
+      g.beginPath();g.arc(bx,by-58,14,Math.PI,0);g.fill();
+      g.beginPath();g.arc(bx+8,by-56,8,-.2,Math.PI*.9);g.fill();
+      // Ponytail swishing
+      g.fillStyle='#28100a';
+      g.beginPath();
+      g.moveTo(bx-4,by-62);
+      g.bezierCurveTo(bx-16,by-70+Math.sin(danceT*.14)*6,
+                      bx-22+Math.sin(danceT*.11)*8,by-50,
+                      bx-18+Math.cos(danceT*.14)*6,by-44);
+      g.lineTo(bx-12,by-48);
+      g.bezierCurveTo(bx-14,by-56,bx-8,by-62,bx-4,by-62);
+      g.closePath();g.fill();
+      // Eyes (blinking every ~60 frames)
+      var blink=danceT%60<4;
+      g.fillStyle='#28100a';
+      if(!blink){
+        g.beginPath();g.arc(bx-5,by-53,2.5,0,6.28);g.fill();
+        g.beginPath();g.arc(bx+5,by-53,2.5,0,6.28);g.fill();
+        g.fillStyle='rgba(255,255,255,.8)';
+        g.beginPath();g.arc(bx-4,by-54,1,0,6.28);g.fill();
+        g.beginPath();g.arc(bx+6,by-54,1,0,6.28);g.fill();
+      } else {
+        g.strokeStyle='#28100a';g.lineWidth=1.5;g.lineCap='round';
+        g.beginPath();g.moveTo(bx-7,by-53);g.lineTo(bx-3,by-53);g.stroke();
+        g.beginPath();g.moveTo(bx+3,by-53);g.lineTo(bx+7,by-53);g.stroke();
+      }
+      // Smile
+      g.strokeStyle='#a04040';g.lineWidth=1.2;
+      g.beginPath();g.arc(bx,by-48,5,0.2,Math.PI-.2);g.stroke();
+      // Blush
+      g.fillStyle='rgba(255,140,160,.45)';
+      g.beginPath();g.ellipse(bx-8,by-49,4,2.5,0,0,6.28);g.fill();
+      g.beginPath();g.ellipse(bx+8,by-49,4,2.5,0,0,6.28);g.fill();
+      // --- PINKY UP ARMS ---
+      // Arms raise up during intro (first 25 frames) then hold the pose
+      var armRaise=Math.min(1,danceT/25);
+      var liftL=-Math.PI*.55-Math.sin(danceT*.13)*.08;
+      var liftR=-Math.PI*.45+Math.sin(danceT*.13+1)*.08;
+      // Upper arm L
+      g.strokeStyle='#f8cfa8';g.lineWidth=6;g.lineCap='round';
+      var la1x=bx-10,la1y=by-32;
+      var la2x=la1x+Math.cos(liftL+armRaise*(liftL--Math.PI*.55))*22;
+      var la2y=la1y+Math.sin(liftL)*22;
+      la2x=la1x+Math.cos(liftL)*22*armRaise+(1-armRaise)*(la1x-16);
+      la2y=la1y+Math.sin(liftL)*22*armRaise+(1-armRaise)*(la1y+10);
+      g.beginPath();g.moveTo(la1x,la1y);g.lineTo(la2x,la2y);g.stroke();
+      // Forearm L (bent upward)
+      var la3x=la2x+Math.cos(liftL+.9)*16*armRaise;
+      var la3y=la2y+Math.sin(liftL+.9)*16*armRaise+(1-armRaise)*10;
+      g.lineWidth=5;
+      g.beginPath();g.moveTo(la2x,la2y);g.lineTo(la3x,la3y);g.stroke();
+      // Fist L (closed)
+      g.fillStyle='#f8cfa8';
+      g.beginPath();g.arc(la3x,la3y,4.5,0,6.28);g.fill();
+      // PINKY L — single finger extended upward
+      g.strokeStyle='#f8cfa8';g.lineWidth=2.2;g.lineCap='round';
+      g.beginPath();
+      g.moveTo(la3x-1.5,la3y-4);
+      g.lineTo(la3x-3,la3y-14*armRaise);g.stroke();
+      // Upper arm R
+      g.strokeStyle='#f8cfa8';g.lineWidth=6;
+      var ra1x=bx+10,ra1y=by-32;
+      var ra2x=ra1x+Math.cos(liftR)*22*armRaise+(1-armRaise)*(ra1x+16);
+      var ra2y=ra1y+Math.sin(liftR)*22*armRaise+(1-armRaise)*(ra1y+10);
+      g.beginPath();g.moveTo(ra1x,ra1y);g.lineTo(ra2x,ra2y);g.stroke();
+      // Forearm R
+      var ra3x=ra2x+Math.cos(liftR-.9)*16*armRaise;
+      var ra3y=ra2y+Math.sin(liftR-.9)*16*armRaise+(1-armRaise)*10;
+      g.lineWidth=5;
+      g.beginPath();g.moveTo(ra2x,ra2y);g.lineTo(ra3x,ra3y);g.stroke();
+      // Fist R
+      g.fillStyle='#f8cfa8';
+      g.beginPath();g.arc(ra3x,ra3y,4.5,0,6.28);g.fill();
+      // PINKY R
+      g.strokeStyle='#f8cfa8';g.lineWidth=2.2;g.lineCap='round';
+      g.beginPath();
+      g.moveTo(ra3x+1.5,ra3y-4);
+      g.lineTo(ra3x+3,ra3y-14*armRaise);g.stroke();
+      // Legs (stepping alternately)
+      var stepL=Math.sin(danceT*.18)*12;
+      var stepR=-Math.sin(danceT*.18)*12;
+      g.strokeStyle='#ff70c0';g.lineWidth=7;g.lineCap='round';
+      g.beginPath();g.moveTo(bx-5,by+36);g.lineTo(bx-5+stepL*.3,by+52);g.stroke();
+      g.lineWidth=5;
+      g.beginPath();g.moveTo(bx-5+stepL*.3,by+52);g.lineTo(bx-5+stepL*.5,by+64);g.stroke();
+      g.beginPath();g.moveTo(bx+5,by+36);g.lineTo(bx+5+stepR*.3,by+52);g.stroke();
+      g.beginPath();g.moveTo(bx+5+stepR*.3,by+52);g.lineTo(bx+5+stepR*.5,by+64);g.stroke();
+      // Shoes
+      g.fillStyle='#ffffff';
+      g.beginPath();g.ellipse(bx-5+stepL*.5,by+66,8,4,.2,0,6.28);g.fill();
+      g.beginPath();g.ellipse(bx+5+stepR*.5,by+66,8,4,-.2,0,6.28);g.fill();
+      // ★ Sparkle burst around the pinky tips
+      [[la3x-3,la3y-14],[ra3x+3,ra3y-14]].forEach(function(pt){
+        for(var spi=0;spi<5;spi++){
+          var spa=spi/5*6.28+danceT*.12;
+          var spr=6+Math.sin(danceT*.2+spi)*3;
+          g.fillStyle=['#ffcc44','#ff88dd','#88ddff','#ffddaa','#ff66cc'][spi];
+          g.globalAlpha=(.6+Math.sin(danceT*.15+spi)*.3)*fade;
+          g.beginPath();g.arc(pt[0]+Math.cos(spa)*spr,pt[1]+Math.sin(spa)*spr,1.8,0,6.28);g.fill();
+        }
+      });
+      g.globalAlpha=1;
+      g.textAlign='left';
+    })();
   }
   drawOverlay();
   if(state==='play')update();
