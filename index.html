@@ -415,6 +415,8 @@ if(!g.roundRect)g.roundRect=function(x,y,w,h,r){r=Math.min(+r||0,w/2,h/2);
 var tick=0,state='title',selectedChar=0,selHover=-1,_mx=0,_my=0;
 var currentLevel=0,bossActive=false,bossDefeated=false,levelCompleteTimer=0,_paused=false;
 var _landTimer=0,_wasOnGround=false;// animation helpers
+// _PA: player animation state — read by character draw functions
+var _PA={step:0,idle:0,running:false,air:false,rising:false};
 var _pauseHoverResume=false,_pauseHoverMenu=false,_pauseSelHover=-1,_pauseScroll=0;
 var BOSS={x:0,y:0,vx:2,vy:0,w:90,h:110,hp:0,maxHp:0,alive:false,dead:false,
   hitTimer:0,deathTimer:0,timer:0,dir:-1,phase2:false,projs:[]};
@@ -1563,9 +1565,16 @@ function drawMarie(x,y){
   var W2=g.fillStyle; // temp
   // Fluffy body
   g.fillStyle='#fffafa';g.beginPath();g.ellipse(x,y+28,11,13,0,0,6.28);g.fill();
-  // Curling tail
+  // Curling tail – wags with step cycle
+  var _mtw=_PA.running?_PA.step*12:_PA.idle*5;
   g.strokeStyle='#fffafa';g.lineWidth=5;g.lineCap='round';
-  g.beginPath();g.moveTo(x+9,y+36);g.bezierCurveTo(x+26,y+34,x+28,y+20,x+16,y+16);g.stroke();
+  g.beginPath();g.moveTo(x+9,y+36);
+  g.bezierCurveTo(x+26+_mtw,y+34,x+28+_mtw*.5,y+20,x+16+_mtw*.3,y+16);g.stroke();
+  // Paws – peek out and step when running
+  var _mlp=_PA.running?_PA.step*5:0,_mrp=_PA.running?-_PA.step*5:0;
+  g.fillStyle='#fffafa';
+  g.beginPath();g.ellipse(x-7+_mlp,y+39,5,3.5,_mlp*.04,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+7+_mrp,y+39,5,3.5,_mrp*.04,0,6.28);g.fill();
   // Head – round & fluffy
   g.fillStyle='#fffafa';g.beginPath();g.ellipse(x,y+4,18,17,0,0,6.28);g.fill();
   // Pointed ears
@@ -2264,17 +2273,22 @@ function drawPikachu(x,y){
   g.strokeStyle='#8b5a10';g.lineWidth=2;g.lineCap='round';
   g.beginPath();g.moveTo(x-4,y+13);g.lineTo(x-4,y+19);g.stroke();
   g.beginPath();g.moveTo(x+3,y+12);g.lineTo(x+3,y+18);g.stroke();
-  // Arms
+  // Arms – pivot rotate at shoulder
+  var _pas=_PA.running?_PA.step*0.55:_PA.idle*0.12;
   g.fillStyle='#f8d030';
-  g.beginPath();g.ellipse(x-18,y+22,5,4,0.4,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+18,y+22,5,4,-0.4,0,6.28);g.fill();
-  // Legs
-  g.beginPath();g.ellipse(x-8,y+35,6,8,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+8,y+35,6,8,0,0,6.28);g.fill();
+  g.save();g.translate(x-14,y+18);g.rotate(-_pas);
+  g.beginPath();g.ellipse(0,6,5,9,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+14,y+18);g.rotate(_pas);
+  g.beginPath();g.ellipse(0,6,5,9,0,0,6.28);g.fill();g.restore();
+  // Legs – alternate step
+  var _plL=_PA.running?_PA.step*6:0,_plR=_PA.running?-_PA.step*6:0;
+  var _pbL=_PA.running?Math.abs(_PA.step)*4:0,_pbR=_PA.running?Math.abs(-_PA.step)*4:0;
+  g.beginPath();g.ellipse(x-8+_plL,y+35-_pbL,6,8,_plL*0.04,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8+_plR,y+35-_pbR,6,8,_plR*0.04,0,6.28);g.fill();
   // Feet
   g.fillStyle='#e8b820';
-  g.beginPath();g.ellipse(x-8,y+42,8,4,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+8,y+42,8,4,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x-8+_plL,y+42,8,4,_plL*0.03,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8+_plR,y+42,8,4,_plR*0.03,0,6.28);g.fill();
   // Left ear
   g.fillStyle='#f8d030';
   g.beginPath();g.moveTo(x-10,y+1);g.lineTo(x-17,y-24);g.lineTo(x-5,y-3);g.closePath();g.fill();
@@ -2313,11 +2327,12 @@ function drawPikachu(x,y){
 
 // ★ YOUNG SIMBA (The Lion King)
 function drawSimba(x,y){
-  // Tail — curling up behind him (drawn first)
+  // Tail — wags with step cycle
+  var _stw=_PA.running?_PA.step*10:_PA.idle*4;
   g.strokeStyle='#d4860a';g.lineWidth=5;g.lineCap='round';
   g.beginPath();
   g.moveTo(x+10,y+38);
-  g.bezierCurveTo(x+28,y+30,x+34,y+12,x+26,y+4);
+  g.bezierCurveTo(x+28+_stw,y+30,x+34+_stw*.6,y+12,x+26+_stw*.3,y+4);
   g.stroke();
   // Dark tail tuft
   g.fillStyle='#6a3200';
@@ -2328,24 +2343,29 @@ function drawSimba(x,y){
   // Cream belly
   g.fillStyle='#f5d88a';
   g.beginPath();g.ellipse(x,y+28,9,9,0,0,6.28);g.fill();
-  // Front legs
+  // Front legs – alternate step
+  var _siL=_PA.running?_PA.step*7:0,_siR=_PA.running?-_PA.step*7:0;
+  var _sib=_PA.running?Math.abs(_PA.step)*4:0;
   g.fillStyle='#e8a820';
-  g.beginPath();g.ellipse(x-8,y+37,5,8,0.1,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+8,y+37,5,8,-0.1,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x-8+_siL,y+37-Math.abs(_siL)*.4,5,8,_siL*0.04,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8+_siR,y+37-Math.abs(_siR)*.4,5,8,_siR*0.04,0,6.28);g.fill();
   // Paws
   g.fillStyle='#d49018';
-  g.beginPath();g.ellipse(x-9,y+44,7,4,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+9,y+44,7,4,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x-9+_siL,y+44,7,4,_siL*0.03,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+9+_siR,y+44,7,4,_siR*0.03,0,6.28);g.fill();
   // Paw toes
   g.fillStyle='#c07f10';
   [-3,0,3].forEach(function(tx){
     g.beginPath();g.ellipse(x-9+tx,y+46,1.5,1.2,0,0,6.28);g.fill();
     g.beginPath();g.ellipse(x+9+tx,y+46,1.5,1.2,0,0,6.28);g.fill();
   });
-  // Small front arms reaching out
+  // Small front arms – pivot swing
+  var _sia=_PA.running?-_PA.step*0.45:_PA.idle*0.1;
   g.fillStyle='#e8a820';
-  g.beginPath();g.ellipse(x-17,y+24,5,4,0.5,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+17,y+24,5,4,-0.5,0,6.28);g.fill();
+  g.save();g.translate(x-14,y+22);g.rotate(_sia);
+  g.beginPath();g.ellipse(0,5,5,8,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+14,y+22);g.rotate(-_sia);
+  g.beginPath();g.ellipse(0,5,5,8,0,0,6.28);g.fill();g.restore();
   // Big round cub head
   g.fillStyle='#e8a820';
   g.beginPath();g.arc(x,y+5,20,0,6.28);g.fill();
@@ -2417,27 +2437,35 @@ function drawStitch(x,y){
     g.lineTo(x+ox+3,y+12);
     g.closePath();g.fill();
   });
-  // Extra pair of small arms (Stitch has 6 limbs)
+  // Extra arms – swing opposite to main
+  var _ssa=_PA.running?_PA.step*0.6:_PA.idle*0.15;
   g.fillStyle='#4488dd';
-  g.beginPath();g.ellipse(x-21,y+20,5,3,0.7,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+21,y+20,5,3,-0.7,0,6.28);g.fill();
-  // Main arms
-  g.beginPath();g.ellipse(x-18,y+28,6,4,0.4,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+18,y+28,6,4,-0.4,0,6.28);g.fill();
-  // Claws on main arms (3 claws each)
+  g.save();g.translate(x-18,y+15);g.rotate(-_ssa*0.7);
+  g.beginPath();g.ellipse(0,5,5,7,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+18,y+15);g.rotate(_ssa*0.7);
+  g.beginPath();g.ellipse(0,5,5,7,0,0,6.28);g.fill();g.restore();
+  // Main arms – pivot rotate at shoulder
+  g.save();g.translate(x-16,y+24);g.rotate(_ssa);
+  g.beginPath();g.ellipse(0,7,6,10,0,0,6.28);g.fill();
+  // Claws on left main arm
   g.strokeStyle='#2255bb';g.lineWidth=1.5;g.lineCap='round';
-  [-3,0,3].forEach(function(cx2){
-    g.beginPath();g.moveTo(x-18+cx2,y+31);g.lineTo(x-20+cx2*.5,y+37);g.stroke();
-    g.beginPath();g.moveTo(x+18+cx2,y+31);g.lineTo(x+20+cx2*.5,y+37);g.stroke();
-  });
-  // Legs
+  [-3,0,3].forEach(function(cx2){g.beginPath();g.moveTo(cx2,13);g.lineTo(cx2-1,19);g.stroke();});
+  g.restore();
+  g.save();g.translate(x+16,y+24);g.rotate(-_ssa);
+  g.beginPath();g.ellipse(0,7,6,10,0,0,6.28);g.fill();
+  g.strokeStyle='#2255bb';g.lineWidth=1.5;g.lineCap='round';
+  [-3,0,3].forEach(function(cx2){g.beginPath();g.moveTo(cx2,13);g.lineTo(cx2+1,19);g.stroke();});
+  g.restore();
+  // Legs – alternate step
+  var _slL=_PA.running?_PA.step*7:0,_slR=_PA.running?-_PA.step*7:0;
+  var _sbL=Math.abs(_slL)*.5,_sbR=Math.abs(_slR)*.5;
   g.fillStyle='#4488dd';
-  g.beginPath();g.ellipse(x-8,y+38,6,7,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+8,y+38,6,7,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x-8+_slL,y+38-_sbL,6,7,_slL*0.03,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8+_slR,y+38-_sbR,6,7,_slR*0.03,0,6.28);g.fill();
   // Feet
   g.fillStyle='#3377cc';
-  g.beginPath();g.ellipse(x-9,y+44,8,4,0.15,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+9,y+44,8,4,-0.15,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x-9+_slL,y+44,8,4,0.15+_slL*0.02,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+9+_slR,y+44,8,4,-0.15+_slR*0.02,0,6.28);g.fill();
   // Big round head
   g.fillStyle='#4488dd';
   g.beginPath();g.arc(x,y+6,19,0,6.28);g.fill();
@@ -2950,6 +2978,12 @@ function drawPlayer(){
   g.translate(sx3+P.w/2,P.y+P.h);
   if(P.dir<0)g.scale(-1,1);
   g.scale(0.84,0.84);
+  // Compute per-limb animation state for character draw fns
+  _PA.step    = Math.sin(tick*0.28);
+  _PA.idle    = Math.sin(tick*0.055);
+  _PA.running = P.onGround && Math.abs(P.vx)>0.8;
+  _PA.air     = !P.onGround;
+  _PA.rising  = P.vy<0;
   // ★ Squash • Stretch • Bob • Lean animation
   var aTy=0,aLean=0,aSx=1,aSy=1;
   if(_landTimer>0){
