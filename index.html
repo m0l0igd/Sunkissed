@@ -1622,22 +1622,22 @@ function drawMarie(x,y){
 
 function drawAngel(x,y){
   // Angel – Stitch: pale-pink alien dog, LONG droopy ears, magenta head-spots, violet eyes, horns
-  // ★ ICONIC: very long floppy ears ★
+  // Long floppy ears – sway with step
+  var _aes=_PA.running?_PA.step*8:_PA.idle*3;
   g.fillStyle='#ffb3d9';
   g.beginPath();g.moveTo(x-7,y-6);
-  g.bezierCurveTo(x-22,y-4,x-26,y+28,x-18,y+38);
-  g.bezierCurveTo(x-14,y+42,x-10,y+34,x-9,y+10);g.closePath();g.fill();
+  g.bezierCurveTo(x-22+_aes,y-4,x-26+_aes,y+28,x-18+_aes*.6,y+38);
+  g.bezierCurveTo(x-14+_aes*.4,y+42,x-10,y+34,x-9,y+10);g.closePath();g.fill();
   g.beginPath();g.moveTo(x+7,y-6);
-  g.bezierCurveTo(x+22,y-4,x+26,y+28,x+18,y+38);
-  g.bezierCurveTo(x+14,y+42,x+10,y+34,x+9,y+10);g.closePath();g.fill();
-  // Inner ear
+  g.bezierCurveTo(x+22+_aes,y-4,x+26+_aes,y+28,x+18+_aes*.6,y+38);
+  g.bezierCurveTo(x+14+_aes*.4,y+42,x+10,y+34,x+9,y+10);g.closePath();g.fill();
   g.fillStyle='#ff88bb';
   g.beginPath();g.moveTo(x-8,y+2);
-  g.bezierCurveTo(x-18,y+4,x-20,y+26,x-14,y+34);
-  g.bezierCurveTo(x-11,y+38,x-10,y+28,x-10,y+8);g.closePath();g.fill();
+  g.bezierCurveTo(x-18+_aes*.8,y+4,x-20+_aes*.8,y+26,x-14+_aes*.5,y+34);
+  g.bezierCurveTo(x-11+_aes*.3,y+38,x-10,y+28,x-10,y+8);g.closePath();g.fill();
   g.beginPath();g.moveTo(x+8,y+2);
-  g.bezierCurveTo(x+18,y+4,x+20,y+26,x+14,y+34);
-  g.bezierCurveTo(x+11,y+38,x+10,y+28,x+10,y+8);g.closePath();g.fill();
+  g.bezierCurveTo(x+18+_aes*.8,y+4,x+20+_aes*.8,y+26,x+14+_aes*.5,y+34);
+  g.bezierCurveTo(x+11+_aes*.3,y+38,x+10,y+28,x+10,y+8);g.closePath();g.fill();
   // Body
   g.fillStyle='#ffb3d9';g.beginPath();g.ellipse(x,y+24,12,13,0,0,6.28);g.fill();
   // Chest tuft
@@ -1660,10 +1660,13 @@ function drawAngel(x,y){
   // Snout
   g.fillStyle='#ffcce8';g.beginPath();g.ellipse(x,y+9,5.5,4,0,0,6.28);g.fill();
   fC(x-2,y+9,1.5,'#cc6688');fC(x+2,y+9,1.5,'#cc6688');
-  // Tiny wings
-  g.globalAlpha=.5;g.fillStyle='#ffe0f0';
-  g.beginPath();g.ellipse(x-15,y+20,10,6,-.4,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+15,y+20,10,6,.4,0,6.28);g.fill();
+  // Tiny wings – flap
+  var _awf=_PA.running?Math.abs(_PA.step)*0.5:_PA.idle*0.15;
+  g.globalAlpha=.5+Math.abs(_awf)*.3;g.fillStyle='#ffe0f0';
+  g.save();g.translate(x-15,y+20);g.rotate(-_awf);
+  g.beginPath();g.ellipse(0,0,10,6,-.4,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+15,y+20);g.rotate(_awf);
+  g.beginPath();g.ellipse(0,0,10,6,.4,0,6.28);g.fill();g.restore();
   g.globalAlpha=1;
 }
 
@@ -1681,13 +1684,21 @@ function drawCharlotte(x,y){
   g.bezierCurveTo(x-20,y+20,x-22,y+42,x-14,y+56);
   g.lineTo(x+14,y+56);
   g.bezierCurveTo(x+22,y+42,x+20,y+20,x+7,y+14);g.closePath();g.fill();
-  // Ruffle lines
+  // Ruffle lines – sway
+  var _cgs=_PA.running?_PA.step*6:_PA.idle*2.5;
   g.strokeStyle='#ff6eb4';g.lineWidth=1.5;
-  g.beginPath();g.moveTo(x-36,y+40);g.quadraticCurveTo(x,y+32,x+36,y+40);g.stroke();
-  g.beginPath();g.moveTo(x-40,y+52);g.quadraticCurveTo(x,y+44,x+40,y+52);g.stroke();
+  g.beginPath();g.moveTo(x-36,y+40);g.quadraticCurveTo(x+_cgs,y+32,x+36,y+40);g.stroke();
+  g.beginPath();g.moveTo(x-40,y+52);g.quadraticCurveTo(x+_cgs,y+44,x+40,y+52);g.stroke();
   // White corset / bodice
   g.fillStyle='#fff8f0';g.fillRect(x-7,y+10,14,12);
   g.strokeStyle='#ffb3d9';g.lineWidth=1;g.strokeRect(x-7,y+10,14,12);
+  // Arms – swing at sides
+  var _caa=_PA.running?_PA.step*0.5:_PA.idle*0.12;
+  g.fillStyle='#fde0c0';
+  g.save();g.translate(x-9,y+14);g.rotate(-_caa);
+  g.beginPath();g.ellipse(0,8,4,10,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+9,y+14);g.rotate(_caa);
+  g.beginPath();g.ellipse(0,8,4,10,0,0,6.28);g.fill();g.restore();
   // Pearl necklace
   for(var pi=0;pi<7;pi++){
     var pa=Math.PI*(.15+pi*.1);
@@ -1733,15 +1744,15 @@ function drawPearl(x,y){
   g.globalAlpha=.25;
   fC(x-10,y+4,4,'#ff6699');fC(x+6,y+12,3,'#ff6699');fC(x-2,y+2,2,'#ff6699');
   g.globalAlpha=1;
-  // 8 stubby tentacles
+  // 8 stubby tentacles – ripple wave
   g.strokeStyle='#ffb3cc';g.lineWidth=4;g.lineCap='round';
   var tAngles=[200,225,250,275,300,315,330,350];
-  tAngles.forEach(function(a){
+  tAngles.forEach(function(a,ti){
     var rad=a*Math.PI/180;
-    g.beginPath();
-    g.moveTo(x-2+Math.cos(rad)*14,y+6+Math.sin(rad)*10);
-    g.lineTo(x-2+Math.cos(rad)*24,y+6+Math.sin(rad)*18);
-    g.stroke();
+    var _twiggle=(_PA.running?_PA.step:_PA.idle*.4)*Math.sin(ti*0.9+1)*6;
+    var tx2=x-2+Math.cos(rad)*14, ty2=y+6+Math.sin(rad)*10;
+    var tx3=x-2+Math.cos(rad)*(24+_twiggle), ty3=y+6+Math.sin(rad)*(18+_twiggle);
+    g.beginPath();g.moveTo(tx2,ty2);g.lineTo(tx3,ty3);g.stroke();
   });
   // ★ ICONIC: one giant eye + one small eye ★
   // BIG right eye
@@ -1769,13 +1780,18 @@ function drawPiglet(x,y){
   g.restore();
   // Head
   g.fillStyle='#f2a7c3';g.beginPath();g.ellipse(x,y+1,15,14,0,0,6.28);g.fill();
-  // Floppy ears (very distinctive)
+  // Floppy ears – flap
+  var _pef=_PA.running?_PA.step*0.35:_PA.idle*0.1;
   g.fillStyle='#f2a7c3';
-  g.beginPath();g.ellipse(x-13,y-13,9,11,-.3,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+13,y-13,9,11,.3,0,6.28);g.fill();
-  g.fillStyle='#e896b8';
-  g.beginPath();g.ellipse(x-13,y-13,5.5,7.5,-.3,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+13,y-13,5.5,7.5,.3,0,6.28);g.fill();
+  g.save();g.translate(x-13,y-6);g.rotate(_pef);
+  g.beginPath();g.ellipse(0,-7,9,11,-.3,0,6.28);g.fill();
+  g.fillStyle='#e896b8';g.beginPath();g.ellipse(0,-7,5.5,7.5,-.3,0,6.28);g.fill();
+  g.restore();
+  g.fillStyle='#f2a7c3';
+  g.save();g.translate(x+13,y-6);g.rotate(-_pef);
+  g.beginPath();g.ellipse(0,-7,9,11,.3,0,6.28);g.fill();
+  g.fillStyle='#e896b8';g.beginPath();g.ellipse(0,-7,5.5,7.5,.3,0,6.28);g.fill();
+  g.restore();
   // Eyes
   fC(x-5,y+1,4,'#fff');fC(x+5,y+1,4,'#fff');
   fC(x-5,y+1,3,'#3366aa');fC(x+5,y+1,3,'#3366aa');
@@ -1787,33 +1803,51 @@ function drawPiglet(x,y){
   // Smile
   g.strokeStyle='#b05070';g.lineWidth=1.5;
   g.beginPath();g.arc(x,y+8,5,.1,Math.PI-.1);g.stroke();
-  // Little arms
-  fC(x-16,y+22,5,'#f2a7c3');fC(x+16,y+22,5,'#f2a7c3');
-  // Curly tail
+  // Little arms – swing
+  var _paa=_PA.running?-_PA.step*0.5:_PA.idle*0.12;
+  g.fillStyle='#f2a7c3';
+  g.save();g.translate(x-14,y+20);g.rotate(_paa);
+  g.beginPath();g.ellipse(0,4,5,8,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+14,y+20);g.rotate(-_paa);
+  g.beginPath();g.ellipse(0,4,5,8,0,0,6.28);g.fill();g.restore();
+  // Curly tail – wag
+  var _ptw=_PA.running?_PA.step*5:_PA.idle*2;
   g.strokeStyle='#f2a7c3';g.lineWidth=3;g.lineCap='round';
-  g.beginPath();g.arc(x+13,y+32,4,-Math.PI*.5,Math.PI,false);g.stroke();
+  g.beginPath();g.arc(x+13+_ptw*.5,y+32,4,-Math.PI*.5,Math.PI,false);g.stroke();
 }
 
 function drawSylveon(x,y){
   // Sylveon – Pokémon: ★ cream+pink fairy ribbon Pokemon, ribbon feelers, red bow ★
-  // Ribbon feelers (most iconic — drawn first/behind)
+  // Ribbon feelers – wave like ribbons
+  var _sfw=_PA.running?_PA.step*10:_PA.idle*4;
+  var _sfwb=_PA.running?-_PA.step*10:_PA.idle*-4;
   g.strokeStyle='#ff9eb5';g.lineWidth=6;g.lineCap='round';
-  g.beginPath();g.moveTo(x-3,y-10);g.bezierCurveTo(x-26,y-6,x-30,y+18,x-24,y+32);g.stroke();
-  g.beginPath();g.moveTo(x+3,y-10);g.bezierCurveTo(x+26,y-6,x+30,y+18,x+24,y+32);g.stroke();
+  g.beginPath();g.moveTo(x-3,y-10);
+  g.bezierCurveTo(x-26+_sfw,y-6,x-30+_sfwb,y+18,x-24+_sfw*.5,y+32);g.stroke();
+  g.beginPath();g.moveTo(x+3,y-10);
+  g.bezierCurveTo(x+26+_sfwb,y-6,x+30+_sfw,y+18,x+24+_sfwb*.5,y+32);g.stroke();
   g.strokeStyle='#aac4ff';g.lineWidth=3.5;
-  g.beginPath();g.moveTo(x-5,y-8);g.bezierCurveTo(x-22,y,x-24,y+20,x-18,y+34);g.stroke();
-  g.beginPath();g.moveTo(x+5,y-8);g.bezierCurveTo(x+22,y,x+24,y+20,x+18,y+34);g.stroke();
-  // Feeler paw-hands
-  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x-24,y+32,6,4,-.3,0,6.28);g.fill();
-  g.fillStyle='#aac4ff';g.beginPath();g.ellipse(x-18,y+34,5,3.5,-.2,0,6.28);g.fill();
-  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x+24,y+32,6,4,.3,0,6.28);g.fill();
-  g.fillStyle='#aac4ff';g.beginPath();g.ellipse(x+18,y+34,5,3.5,.2,0,6.28);g.fill();
+  g.beginPath();g.moveTo(x-5,y-8);
+  g.bezierCurveTo(x-22+_sfwb,y,x-24+_sfw,y+20,x-18+_sfwb*.5,y+34);g.stroke();
+  g.beginPath();g.moveTo(x+5,y-8);
+  g.bezierCurveTo(x+22+_sfw,y,x+24+_sfwb,y+20,x+18+_sfw*.5,y+34);g.stroke();
+  // Feeler paw-hands – follow ribbon tips
+  g.fillStyle='#fff8f0';
+  g.beginPath();g.ellipse(x-24+_sfw*.5,y+32,6,4,-.3,0,6.28);g.fill();
+  g.fillStyle='#aac4ff';
+  g.beginPath();g.ellipse(x-18+_sfwb*.5,y+34,5,3.5,-.2,0,6.28);g.fill();
+  g.fillStyle='#fff8f0';
+  g.beginPath();g.ellipse(x+24+_sfwb*.5,y+32,6,4,.3,0,6.28);g.fill();
+  g.fillStyle='#aac4ff';
+  g.beginPath();g.ellipse(x+18+_sfw*.5,y+34,5,3.5,.2,0,6.28);g.fill();
   // Body (cream white)
   g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x,y+22,12,14,0,0,6.28);g.fill();
   // Cream belly
   g.fillStyle='#ffe8f0';g.beginPath();g.ellipse(x,y+24,7,9,0,0,6.28);g.fill();
-  // Pink paws
-  fC(x-8,y+34,5,'#ffb3c6');fC(x+8,y+34,5,'#ffb3c6');
+  // Pink paws – step
+  var _spL=_PA.running?_PA.step*5:0,_spR=_PA.running?-_PA.step*5:0;
+  fC(x-8+_spL,y+34-Math.abs(_spL)*.3,5,'#ffb3c6');
+  fC(x+8+_spR,y+34-Math.abs(_spR)*.3,5,'#ffb3c6');
   // Red collar + blue gem
   g.strokeStyle='#cc2244';g.lineWidth=4;g.beginPath();g.arc(x,y+11,10,Math.PI*.1,Math.PI*.9);g.stroke();
   fC(x,y+13,3.5,'#4d8fff');
@@ -1848,22 +1882,28 @@ function drawSylveon(x,y){
 
 function drawMew(x,y){
   // Mew – Pokémon: ★ tiny round pink psychic, HUGE teal eyes, long curling tail ★
-  // Long curling tail (very distinctive)
+  // Long curling tail – flow
+  var _mtf=_PA.running?_PA.step*12:_PA.idle*5;
   g.strokeStyle='#f4a0bc';g.lineWidth=6;g.lineCap='round';
   g.beginPath();g.moveTo(x+12,y+32);
-  g.bezierCurveTo(x+38,y+24,x+40,y+4,x+24,y-8);
-  g.bezierCurveTo(x+14,y-16,x+6,y-10,x+10,y-4);g.stroke();
-  fC(x+10,y-4,5.5,'#f4a0bc');// round tail tip
+  g.bezierCurveTo(x+38+_mtf,y+24,x+40+_mtf*.5,y+4,x+24+_mtf*.3,y-8);
+  g.bezierCurveTo(x+14+_mtf*.2,y-16,x+6,y-10,x+10,y-4);g.stroke();
+  fC(x+10+_mtf*.2,y-4,5.5,'#f4a0bc');
   // Perfectly round body
   g.fillStyle='#f4a0bc';g.beginPath();g.arc(x,y+20,16,0,6.28);g.fill();
   // Lighter belly
   g.fillStyle='#ffc8dc';g.beginPath();g.ellipse(x-2,y+22,9,10,0,0,6.28);g.fill();
-  // Tiny arms (nub-like)
+  // Tiny arms – wave
+  var _mwa=_PA.running?-_PA.step*0.5:_PA.idle*0.18;
   g.fillStyle='#f4a0bc';
-  g.beginPath();g.ellipse(x-15,y+18,6,5,-.4,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+15,y+18,6,5,.4,0,6.28);g.fill();
-  // Tiny legs
-  fC(x-7,y+35,5,'#f4a0bc');fC(x+7,y+35,5,'#f4a0bc');
+  g.save();g.translate(x-12,y+16);g.rotate(_mwa);
+  g.beginPath();g.ellipse(0,4,6,8,-.4,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+12,y+16);g.rotate(-_mwa);
+  g.beginPath();g.ellipse(0,4,6,8,.4,0,6.28);g.fill();g.restore();
+  // Tiny legs – step
+  var _mlL=_PA.running?_PA.step*4:0,_mlR=_PA.running?-_PA.step*4:0;
+  fC(x-7+_mlL,y+35-Math.abs(_mlL)*.3,5,'#f4a0bc');
+  fC(x+7+_mlR,y+35-Math.abs(_mlR)*.3,5,'#f4a0bc');
   // Round head (baby proportions)
   g.fillStyle='#f4a0bc';g.beginPath();g.arc(x,y+4,17,0,6.28);g.fill();
   // Tiny triangular ears
@@ -1888,18 +1928,25 @@ function drawMew(x,y){
 
 function drawFlora(x,y){
   // Flora – Winx Club: ★ long auburn hair, FLOWER in hair, green+pink fairy, butterfly wings ★
-  // Butterfly fairy wings (behind everything)
-  g.save();g.globalAlpha=.55;
+  // Butterfly fairy wings – flutter
+  var _fwf=_PA.running?Math.abs(_PA.step)*0.45:_PA.idle*0.12;
+  g.save();g.globalAlpha=.55+Math.abs(_fwf)*.2;
+  g.translate(x,y+12);
   g.fillStyle='#b8ffcc';
-  g.beginPath();g.moveTo(x,y+12);g.bezierCurveTo(x-32,y-2,x-38,y-28,x-20,y-32);
-  g.bezierCurveTo(x-8,y-34,x-2,y-4,x,y+12);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x,y+12);g.bezierCurveTo(x+32,y-2,x+38,y-28,x+20,y-32);
-  g.bezierCurveTo(x+8,y-34,x+2,y-4,x,y+12);g.closePath();g.fill();
+  g.save();g.rotate(-_fwf);
+  g.beginPath();g.moveTo(0,0);g.bezierCurveTo(-32,-14,-38,-40,-20,-44);
+  g.bezierCurveTo(-8,-46,-2,-16,0,0);g.closePath();g.fill();g.restore();
+  g.save();g.rotate(_fwf);
+  g.beginPath();g.moveTo(0,0);g.bezierCurveTo(32,-14,38,-40,20,-44);
+  g.bezierCurveTo(8,-46,2,-16,0,0);g.closePath();g.fill();g.restore();
   g.fillStyle='#88ffb0';
-  g.beginPath();g.moveTo(x,y+14);g.bezierCurveTo(x-24,y+14,x-28,y+38,x-16,y+42);
-  g.bezierCurveTo(x-8,y+44,x-2,y+26,x,y+14);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x,y+14);g.bezierCurveTo(x+24,y+14,x+28,y+38,x+16,y+42);
-  g.bezierCurveTo(x+8,y+44,x+2,y+26,x,y+14);g.closePath();g.fill();
+  g.save();g.rotate(-_fwf*.5);
+  g.beginPath();g.moveTo(0,2);g.bezierCurveTo(-24,2,-28,26,-16,30);
+  g.bezierCurveTo(-8,32,-2,14,0,2);g.closePath();g.fill();g.restore();
+  g.save();g.rotate(_fwf*.5);
+  g.beginPath();g.moveTo(0,2);g.bezierCurveTo(24,2,28,26,16,30);
+  g.bezierCurveTo(8,32,2,14,0,2);g.closePath();g.fill();g.restore();
+  g.restore();
   // Wing veins
   g.strokeStyle='rgba(100,220,140,.5)';g.lineWidth=1;
   g.beginPath();g.moveTo(x,y+12);g.lineTo(x-20,y-20);g.stroke();
@@ -1954,10 +2001,11 @@ function drawGlinda(x,y){
   g.bezierCurveTo(x-22,y+22,x-20,y+54,x-10,y+62);
   g.lineTo(x+10,y+62);
   g.bezierCurveTo(x+20,y+54,x+22,y+22,x+6,y+12);g.closePath();g.fill();
-  // Ruffle layers
+  // Ruffle layers – sway
+  var _ggs=_PA.running?_PA.step*7:_PA.idle*3;
   g.strokeStyle='#e040a0';g.lineWidth=2;
-  g.beginPath();g.moveTo(x-42,y+44);g.quadraticCurveTo(x,y+36,x+42,y+44);g.stroke();
-  g.beginPath();g.moveTo(x-46,y+58);g.quadraticCurveTo(x,y+50,x+46,y+58);g.stroke();
+  g.beginPath();g.moveTo(x-42,y+44);g.quadraticCurveTo(x+_ggs,y+36,x+42,y+44);g.stroke();
+  g.beginPath();g.moveTo(x-46,y+58);g.quadraticCurveTo(x+_ggs*.8,y+50,x+46,y+58);g.stroke();
   // Glitter dots on gown
   [[x-20,y+28],[x+18,y+32],[x-8,y+46],[x+22,y+48],[x-28,y+52],[x+4,y+56]].forEach(function(p){
     fC(p[0],p[1],1.8,'rgba(255,255,255,.8)');
@@ -2043,16 +2091,22 @@ function drawBlossom(x,y){
   g.beginPath();g.moveTo(x+2,y-20);g.bezierCurveTo(x+14,y-30,x+18,y-18,x+2,y-20);g.fill();
   fC(x,y-20,4.5,'#ee1122');// bow knot
   fC(x,y-20,2,'#fff');// heart detail
-  // Arms
-  fC(x-18,y+30,5,'#fde8c8');fC(x+18,y+30,5,'#fde8c8');
+  // Arms – pivot swing
+  var _bla=_PA.running?_PA.step*0.6:_PA.idle*0.15;
+  g.fillStyle='#fde8c8';
+  g.save();g.translate(x-14,y+26);g.rotate(_bla);
+  g.beginPath();g.ellipse(0,6,5,9,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+14,y+26);g.rotate(-_bla);
+  g.beginPath();g.ellipse(0,6,5,9,0,0,6.28);g.fill();g.restore();
 }
 
 
 // ── SUMMER CHARACTERS ──────────────────────────────────────────
 
 function drawOtter(x,y){
+  var _otw=_PA.running?_PA.step*8:_PA.idle*3;
   g.fillStyle='#7a4820';g.beginPath();
-  g.moveTo(x+8,y+42);g.bezierCurveTo(x+28,y+50,x+34,y+42,x+26,y+30);
+  g.moveTo(x+8,y+42);g.bezierCurveTo(x+28+_otw,y+50,x+34+_otw*.5,y+42,x+26+_otw*.3,y+30);
   g.bezierCurveTo(x+22,y+24,x+14,y+28,x+10,y+38);g.closePath();g.fill();
   g.fillStyle='#8b5a2b';g.beginPath();g.ellipse(x,y+26,15,18,0,0,6.28);g.fill();
   g.fillStyle='#d4a06a';g.beginPath();g.ellipse(x,y+28,9,12,0,0,6.28);g.fill();
@@ -2074,22 +2128,39 @@ function drawOtter(x,y){
   for(var sri=0;sri<5;sri++){var sra=sri/5*6.28;
     g.beginPath();g.moveTo(0,0);g.lineTo(Math.cos(sra)*7,Math.sin(sra)*7);g.stroke();}
   g.restore();
-  fC(x-16,y+30,5,'#8b5a2b');fC(x+16,y+30,5,'#8b5a2b');
+  // Arms – swing
+  var _oaa=_PA.running?-_PA.step*0.45:_PA.idle*0.12;
+  g.fillStyle='#8b5a2b';
+  g.save();g.translate(x-14,y+28);g.rotate(_oaa);
+  g.beginPath();g.ellipse(0,5,5,8,0,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+14,y+28);g.rotate(-_oaa);
+  g.beginPath();g.ellipse(0,5,5,8,0,0,6.28);g.fill();g.restore();
 }
 
 function drawFlowerBunny(x,y){
+  // Tail + stepping feet
+  var _fbL=_PA.running?_PA.step*5:0,_fbR=_PA.running?-_PA.step*5:0;
   fC(x+12,y+42,7,'#f0f0f0');
+  g.fillStyle='#f5f5f5';
+  g.beginPath();g.ellipse(x-7+_fbL,y+42-Math.abs(_fbL)*.4,5,7,_fbL*0.04,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+7+_fbR,y+42-Math.abs(_fbR)*.4,5,7,_fbR*0.04,0,6.28);g.fill();
   g.fillStyle='#f5f5f5';g.beginPath();g.ellipse(x,y+28,14,17,0,0,6.28);g.fill();
   g.fillStyle='#ffffff';g.beginPath();g.ellipse(x,y+24,9,10,0,0,6.28);g.fill();
+  // Ears – sway outward when running
+  var _fbe=_PA.running?_PA.step*7:_PA.idle*2.5;
   g.fillStyle='#f0f0f0';
-  g.beginPath();g.moveTo(x-6,y-2);g.bezierCurveTo(x-16,y-28,x-14,y-46,x-8,y-44);
+  g.beginPath();g.moveTo(x-6,y-2);
+  g.bezierCurveTo(x-16+_fbe,y-28,x-14+_fbe,y-46,x-8+_fbe*.6,y-44);
   g.bezierCurveTo(x-2,y-42,x-2,y-22,x-4,y-2);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+6,y-2);g.bezierCurveTo(x+16,y-28,x+14,y-46,x+8,y-44);
+  g.beginPath();g.moveTo(x+6,y-2);
+  g.bezierCurveTo(x+16+_fbe,y-28,x+14+_fbe,y-46,x+8+_fbe*.6,y-44);
   g.bezierCurveTo(x+2,y-42,x+2,y-22,x+4,y-2);g.closePath();g.fill();
   g.fillStyle='#ffb3cc';
-  g.beginPath();g.moveTo(x-5,y-2);g.bezierCurveTo(x-12,y-26,x-10,y-42,x-7,y-41);
+  g.beginPath();g.moveTo(x-5,y-2);
+  g.bezierCurveTo(x-12+_fbe*.8,y-26,x-10+_fbe*.8,y-42,x-7+_fbe*.5,y-41);
   g.bezierCurveTo(x-3,y-40,x-4,y-20,x-4,y-2);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+5,y-2);g.bezierCurveTo(x+12,y-26,x+10,y-42,x+7,y-41);
+  g.beginPath();g.moveTo(x+5,y-2);
+  g.bezierCurveTo(x+12+_fbe*.8,y-26,x+10+_fbe*.8,y-42,x+7+_fbe*.5,y-41);
   g.bezierCurveTo(x+3,y-40,x+4,y-20,x+4,y-2);g.closePath();g.fill();
   g.fillStyle='#f5f5f5';g.beginPath();g.ellipse(x,y+4,15,14,0,0,6.28);g.fill();
   fC(x-5,y+2,4,'#fff');fC(x+5,y+2,4,'#fff');
@@ -2110,20 +2181,33 @@ function drawFlowerBunny(x,y){
 }
 
 function drawFlamingo(x,y){
+  // Legs – iconic one-leg lift when idle
+  var _flift=_PA.running?0:Math.max(0,Math.sin(tick*0.04))*18;
   g.strokeStyle='#dd8899';g.lineWidth=5;g.lineCap='round';
   g.beginPath();g.moveTo(x+2,y+44);g.lineTo(x+2,y+62);g.stroke();
   g.strokeStyle='#cc7788';g.lineWidth=4;
   g.beginPath();g.moveTo(x+2,y+62);g.lineTo(x-8,y+66);g.stroke();
   g.beginPath();g.moveTo(x+2,y+62);g.lineTo(x+8,y+66);g.stroke();
   g.beginPath();g.moveTo(x+2,y+62);g.lineTo(x+2,y+67);g.stroke();
+  // Second leg tucks up when standing
+  if(_flift>2){
+    g.strokeStyle='#dd8899';g.lineWidth=5;g.lineCap='round';
+    g.beginPath();g.moveTo(x-4,y+44+_flift);g.lineTo(x-4,y+54+_flift*.3);g.stroke();
+    g.strokeStyle='#cc7788';g.lineWidth=4;
+    g.beginPath();g.moveTo(x-4,y+54+_flift*.3);g.lineTo(x-12,y+56+_flift*.3);g.stroke();
+  }
   g.fillStyle='#ff88aa';g.beginPath();g.ellipse(x,y+28,16,20,-.15,0,6.28);g.fill();
   g.fillStyle='#ffaabb';g.beginPath();g.ellipse(x-2,y+24,10,12,-.1,0,6.28);g.fill();
   g.strokeStyle='#dd6688';g.lineWidth=2;
   g.beginPath();g.moveTo(x-14,y+22);g.quadraticCurveTo(x-4,y+38,x+12,y+36);g.stroke();
+  // Neck – gentle sway
+  var _fns=_PA.running?_PA.step*4:_PA.idle*3;
   g.strokeStyle='#ff88aa';g.lineWidth=10;g.lineCap='round';
-  g.beginPath();g.moveTo(x-2,y+14);g.bezierCurveTo(x-10,y-2,x+8,y-18,x+2,y-28);g.stroke();
+  g.beginPath();g.moveTo(x-2,y+14);
+  g.bezierCurveTo(x-10+_fns,y-2,x+8+_fns*.5,y-18,x+2+_fns*.3,y-28);g.stroke();
   g.strokeStyle='#ffaabb';g.lineWidth=6;
-  g.beginPath();g.moveTo(x-2,y+14);g.bezierCurveTo(x-8,y+0,x+6,y-16,x+2,y-28);g.stroke();
+  g.beginPath();g.moveTo(x-2,y+14);
+  g.bezierCurveTo(x-8+_fns,y+0,x+6+_fns*.5,y-16,x+2+_fns*.3,y-28);g.stroke();
   fC(x+2,y-30,10,'#ff88aa');fC(x+2,y-30,7,'#ffaabb');
   g.fillStyle='#ffdd88';
   g.beginPath();g.moveTo(x+10,y-30);g.lineTo(x+22,y-26);g.lineTo(x+20,y-23);g.lineTo(x+8,y-27);g.closePath();g.fill();
@@ -2132,11 +2216,18 @@ function drawFlamingo(x,y){
 }
 
 function drawSeaTurtle(x,y){
+  // Flippers – wave alternately
+  var _stfL=_PA.running?_PA.step*0.5:Math.sin(tick*0.08)*0.25;
+  var _stfR=_PA.running?-_PA.step*0.5:Math.sin(tick*0.08+1.5)*0.25;
   g.fillStyle='#4a9a44';
-  g.beginPath();g.ellipse(x-12,y+40,10,6,.5,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+12,y+40,10,6,-.5,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x-20,y+22,12,6,.3,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+20,y+22,12,6,-.3,0,6.28);g.fill();
+  g.save();g.translate(x-12,y+40);g.rotate(_stfL);
+  g.beginPath();g.ellipse(0,0,10,6,.5,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+12,y+40);g.rotate(_stfR);
+  g.beginPath();g.ellipse(0,0,10,6,-.5,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x-20,y+22);g.rotate(-_stfL*1.2);
+  g.beginPath();g.ellipse(0,0,12,6,.3,0,6.28);g.fill();g.restore();
+  g.save();g.translate(x+20,y+22);g.rotate(_stfR*1.2);
+  g.beginPath();g.ellipse(0,0,12,6,-.3,0,6.28);g.fill();g.restore();
   g.fillStyle='#5aaa50';g.beginPath();g.ellipse(x,y+22,20,22,0,0,6.28);g.fill();
   g.strokeStyle='#3a7a34';g.lineWidth=1.5;
   [[0,-8,7],[0,4,8],[-8,-2,6],[8,-2,6],[0,14,6],[-7,10,5],[7,10,5]].forEach(function(sc){
@@ -2152,12 +2243,19 @@ function drawSeaTurtle(x,y){
 function drawBeachCorgi(x,y){
   g.fillStyle='#e8a040';g.beginPath();g.ellipse(x,y+28,15,16,0,0,6.28);g.fill();
   g.fillStyle='#f5c878';g.beginPath();g.ellipse(x,y+26,9,10,0,0,6.28);g.fill();
-  fC(x-10,y+42,6,'#e8a040');fC(x+10,y+42,6,'#e8a040');
-  fC(x-10,y+48,5,'#d49030');fC(x+10,y+48,5,'#d49030');
+  // Paws/legs – step cycle
+  var _bcL=_PA.running?_PA.step*6:0,_bcR=_PA.running?-_PA.step*6:0;
+  fC(x-10+_bcL,y+42-Math.abs(_bcL)*.4,6,'#e8a040');
+  fC(x+10+_bcR,y+42-Math.abs(_bcR)*.4,6,'#e8a040');
+  fC(x-10+_bcL,y+48,5,'#d49030');fC(x+10+_bcR,y+48,5,'#d49030');
   g.fillStyle='#e8a040';g.beginPath();g.ellipse(x,y+6,18,16,0,0,6.28);g.fill();
+  // Ears – flap with step
+  var _bcef=_PA.running?_PA.step*0.25:_PA.idle*0.08;
   g.fillStyle='#c87030';
-  g.beginPath();g.moveTo(x-14,y-2);g.lineTo(x-20,y-22);g.lineTo(x-6,y-8);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+14,y-2);g.lineTo(x+20,y-22);g.lineTo(x+6,y-8);g.closePath();g.fill();
+  g.save();g.translate(x-14,y-2);g.rotate(_bcef);
+  g.beginPath();g.moveTo(0,0);g.lineTo(-6,-20);g.lineTo(8,-6);g.closePath();g.fill();g.restore();
+  g.save();g.translate(x+14,y-2);g.rotate(-_bcef);
+  g.beginPath();g.moveTo(0,0);g.lineTo(6,-20);g.lineTo(-8,-6);g.closePath();g.fill();g.restore();
   g.fillStyle='#ffccaa';
   g.beginPath();g.moveTo(x-13,y-3);g.lineTo(x-17,y-19);g.lineTo(x-7,y-9);g.closePath();g.fill();
   g.beginPath();g.moveTo(x+13,y-3);g.lineTo(x+17,y-19);g.lineTo(x+7,y-9);g.closePath();g.fill();
@@ -2181,22 +2279,30 @@ function drawCrab(x,y){
   g.fillStyle='#c04020';g.beginPath();g.ellipse(x,y+30,16,5,0,0,Math.PI);g.fill();
   // Belly lighter spot
   g.fillStyle='#f08060';g.beginPath();g.ellipse(x,y+28,9,6,0,0,6.28);g.fill();
-  // Left claw arm
+  // Claw arms – wave up/down, claws snap
+  var _cra=_PA.running?Math.abs(_PA.step)*0.35:Math.sin(tick*0.07)*0.2;
+  var _crsnap=_PA.running?Math.abs(_PA.step)*5:Math.abs(Math.sin(tick*0.06))*3;
   g.strokeStyle='#e05030';g.lineWidth=5;g.lineCap='round';
-  g.beginPath();g.moveTo(x-14,y+28);g.lineTo(x-26,y+18);g.stroke();
-  // Left claw pinch
+  // Left arm
+  g.save();g.translate(x-14,y+28);g.rotate(-_cra);
+  g.beginPath();g.moveTo(0,0);g.lineTo(-12,-10);g.stroke();
   g.fillStyle='#e05030';
-  g.beginPath();g.moveTo(x-26,y+18);g.lineTo(x-34,y+13);g.lineTo(x-32,y+22);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x-26,y+18);g.lineTo(x-34,y+22);g.lineTo(x-30,y+27);g.closePath();g.fill();
-  // Right claw arm
-  g.beginPath();g.moveTo(x+14,y+28);g.lineTo(x+26,y+18);g.stroke();
-  g.beginPath();g.moveTo(x+26,y+18);g.lineTo(x+34,y+13);g.lineTo(x+32,y+22);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+26,y+18);g.lineTo(x+34,y+22);g.lineTo(x+30,y+27);g.closePath();g.fill();
-  // Legs (3 each side)
-  g.strokeStyle='#d04828';g.lineWidth=3;
-  [-8,-1,6].forEach(function(ox){
-    g.beginPath();g.moveTo(x+ox-13,y+34);g.lineTo(x+ox-22,y+44);g.stroke();
-    g.beginPath();g.moveTo(x+ox+13,y+34);g.lineTo(x+ox+22,y+44);g.stroke();
+  g.beginPath();g.moveTo(-12,-10);g.lineTo(-20,-15-_crsnap);g.lineTo(-18,-6);g.closePath();g.fill();
+  g.beginPath();g.moveTo(-12,-10);g.lineTo(-20,-4+_crsnap);g.lineTo(-16,1);g.closePath();g.fill();
+  g.restore();
+  // Right arm
+  g.save();g.translate(x+14,y+28);g.rotate(_cra);
+  g.beginPath();g.moveTo(0,0);g.lineTo(12,-10);g.stroke();
+  g.fillStyle='#e05030';
+  g.beginPath();g.moveTo(12,-10);g.lineTo(20,-15-_crsnap);g.lineTo(18,-6);g.closePath();g.fill();
+  g.beginPath();g.moveTo(12,-10);g.lineTo(20,-4+_crsnap);g.lineTo(16,1);g.closePath();g.fill();
+  g.restore();
+  // Legs – scurry
+  g.strokeStyle='#d04828';g.lineWidth=3;g.lineCap='round';
+  [-8,-1,6].forEach(function(ox,li){
+    var _clf=(_PA.running?_PA.step:Math.sin(tick*0.06))*Math.sin(li*1.2+0.5)*6;
+    g.beginPath();g.moveTo(x+ox-13,y+34);g.lineTo(x+ox-22,y+44+_clf);g.stroke();
+    g.beginPath();g.moveTo(x+ox+13,y+34);g.lineTo(x+ox+22,y+44-_clf);g.stroke();
   });
   // Eyes on stalks
   g.strokeStyle='#c04020';g.lineWidth=2.5;
@@ -2224,23 +2330,25 @@ function drawTulipDuck(x,y){
   // Bill holding tulip
   g.fillStyle='#f0a020';
   g.beginPath();g.moveTo(x+16,y+19);g.lineTo(x+26,y+17);g.lineTo(x+26,y+21);g.closePath();g.fill();
-  // Tulip stem in bill
+  // Tulip stem – sway
+  var _tds=_PA.running?_PA.step*5:_PA.idle*2;
   g.strokeStyle='#5a9a30';g.lineWidth=2.5;g.lineCap='round';
-  g.beginPath();g.moveTo(x+22,y+17);g.lineTo(x+22,y+2);g.stroke();
-  // Tulip leaves
+  g.beginPath();g.moveTo(x+22,y+17);g.bezierCurveTo(x+22+_tds*.3,y+10,x+22+_tds*.6,y+5,x+22+_tds,y+2);g.stroke();
+  // Tulip leaves – sway with stem
+  var _tdtx=x+22+_tds;
   g.fillStyle='#6ab840';
-  g.beginPath();g.moveTo(x+22,y+10);g.bezierCurveTo(x+14,y+5,x+12,y+12,x+22,y+12);g.fill();
-  g.beginPath();g.moveTo(x+22,y+8);g.bezierCurveTo(x+30,y+3,x+32,y+10,x+22,y+10);g.fill();
-  // Tulip petals - soft rose pink
+  g.beginPath();g.moveTo(_tdtx,y+10);g.bezierCurveTo(_tdtx-8,y+5,_tdtx-10,y+12,_tdtx,y+12);g.fill();
+  g.beginPath();g.moveTo(_tdtx,y+8);g.bezierCurveTo(_tdtx+8,y+3,_tdtx+10,y+10,_tdtx,y+10);g.fill();
+  // Petals sway with tulip
   g.fillStyle='#e8607a';
-  g.beginPath();g.moveTo(x+22,y-8);g.bezierCurveTo(x+16,y-4,x+16,y+3,x+22,y+2);g.fill();
-  g.beginPath();g.moveTo(x+22,y-8);g.bezierCurveTo(x+28,y-4,x+28,y+3,x+22,y+2);g.fill();
+  g.beginPath();g.moveTo(_tdtx,y-8);g.bezierCurveTo(_tdtx-6,y-4,_tdtx-6,y+3,_tdtx,y+2);g.fill();
+  g.beginPath();g.moveTo(_tdtx,y-8);g.bezierCurveTo(_tdtx+6,y-4,_tdtx+6,y+3,_tdtx,y+2);g.fill();
   g.fillStyle='#f080a0';
-  g.beginPath();g.moveTo(x+22,y-10);g.bezierCurveTo(x+18,y-6,x+18,y+1,x+22,y+2);g.fill();
-  g.beginPath();g.moveTo(x+22,y-10);g.bezierCurveTo(x+26,y-6,x+26,y+1,x+22,y+2);g.fill();
+  g.beginPath();g.moveTo(_tdtx,y-10);g.bezierCurveTo(_tdtx-4,y-6,_tdtx-4,y+1,_tdtx,y+2);g.fill();
+  g.beginPath();g.moveTo(_tdtx,y-10);g.bezierCurveTo(_tdtx+4,y-6,_tdtx+4,y+1,_tdtx,y+2);g.fill();
   g.fillStyle='#ff9ab8';
-  g.beginPath();g.moveTo(x+22,y-12);g.bezierCurveTo(x+19,y-8,x+20,y,x+22,y+2);
-  g.bezierCurveTo(x+24,y,x+25,y-8,x+22,y-12);g.closePath();g.fill();
+  g.beginPath();g.moveTo(_tdtx,y-12);g.bezierCurveTo(_tdtx-3,y-8,_tdtx-2,y,_tdtx,y+2);
+  g.bezierCurveTo(_tdtx+2,y,_tdtx+3,y-8,_tdtx,y-12);g.closePath();g.fill();
   // Feet
   g.fillStyle='#f0a020';
   g.beginPath();g.moveTo(x-6,y+46);g.lineTo(x-14,y+46);g.lineTo(x-8,y+48);g.closePath();g.fill();
