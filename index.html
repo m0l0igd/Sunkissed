@@ -2310,11 +2310,109 @@ function drawPikachu(x,y){
   g.beginPath();g.arc(x+13,y+7,2,0,6.28);g.fill();
 }
 
+// ★ STITCH (Lilo & Stitch)
+function drawStitch(x,y){
+  // Body
+  g.fillStyle='#4488dd';
+  g.beginPath();g.ellipse(x,y+26,15,16,0,0,6.28);g.fill();
+  // Belly patch (lighter blue)
+  g.fillStyle='#99ccff';
+  g.beginPath();g.ellipse(x,y+28,9,10,0,0,6.28);g.fill();
+  // Back spines (darker blue ridge)
+  g.fillStyle='#2255bb';
+  [-5,0,5].forEach(function(ox){
+    g.beginPath();
+    g.moveTo(x+ox-3,y+12);
+    g.lineTo(x+ox,y+5);
+    g.lineTo(x+ox+3,y+12);
+    g.closePath();g.fill();
+  });
+  // Extra pair of small arms (Stitch has 6 limbs)
+  g.fillStyle='#4488dd';
+  g.beginPath();g.ellipse(x-21,y+20,5,3,0.7,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+21,y+20,5,3,-0.7,0,6.28);g.fill();
+  // Main arms
+  g.beginPath();g.ellipse(x-18,y+28,6,4,0.4,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+18,y+28,6,4,-0.4,0,6.28);g.fill();
+  // Claws on main arms (3 claws each)
+  g.strokeStyle='#2255bb';g.lineWidth=1.5;g.lineCap='round';
+  [-3,0,3].forEach(function(cx2){
+    g.beginPath();g.moveTo(x-18+cx2,y+31);g.lineTo(x-20+cx2*.5,y+37);g.stroke();
+    g.beginPath();g.moveTo(x+18+cx2,y+31);g.lineTo(x+20+cx2*.5,y+37);g.stroke();
+  });
+  // Legs
+  g.fillStyle='#4488dd';
+  g.beginPath();g.ellipse(x-8,y+38,6,7,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8,y+38,6,7,0,0,6.28);g.fill();
+  // Feet
+  g.fillStyle='#3377cc';
+  g.beginPath();g.ellipse(x-9,y+44,8,4,0.15,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+9,y+44,8,4,-0.15,0,6.28);g.fill();
+  // Big round head
+  g.fillStyle='#4488dd';
+  g.beginPath();g.arc(x,y+6,19,0,6.28);g.fill();
+  // Ears — large, rounded, sticking up
+  g.fillStyle='#4488dd';
+  // Left ear
+  g.beginPath();g.ellipse(x-15,y-16,8,13,-0.35,0,6.28);g.fill();
+  // Right ear
+  g.beginPath();g.ellipse(x+15,y-16,8,13,0.35,0,6.28);g.fill();
+  // Ear inner pink
+  g.fillStyle='rgba(255,150,180,.6)';
+  g.beginPath();g.ellipse(x-15,y-16,4,8,-0.35,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+15,y-16,4,8,0.35,0,6.28);g.fill();
+  // Ear notch marks (jagged edge hint)
+  g.strokeStyle='#2255bb';g.lineWidth=1.2;
+  g.beginPath();g.moveTo(x-20,y-20);g.lineTo(x-17,y-24);g.lineTo(x-14,y-20);g.stroke();
+  g.beginPath();g.moveTo(x+20,y-20);g.lineTo(x+17,y-24);g.lineTo(x+14,y-20);g.stroke();
+  // Face markings (darker stripe from nose to head top)
+  g.strokeStyle='rgba(30,60,160,.25)';g.lineWidth=2;g.lineCap='round';
+  g.beginPath();g.moveTo(x-8,y+2);g.bezierCurveTo(x-10,y-4,x-8,y-10,x-6,y-14);g.stroke();
+  g.beginPath();g.moveTo(x+8,y+2);g.bezierCurveTo(x+10,y-4,x+8,y-10,x+6,y-14);g.stroke();
+  // Big black eyes
+  g.fillStyle='#0a0a18';
+  g.beginPath();g.ellipse(x-6,y+2,6,7,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+6,y+2,6,7,0,0,6.28);g.fill();
+  // Eye shine (blue tint like Stitch)
+  g.fillStyle='#2244cc';
+  g.beginPath();g.ellipse(x-6,y+1,4,5,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+6,y+1,4,5,0,0,6.28);g.fill();
+  g.fillStyle='#ffffff';
+  g.beginPath();g.arc(x-8,y-1,2,0,6.28);g.fill();
+  g.beginPath();g.arc(x+4,y-1,2,0,6.28);g.fill();
+  g.fillStyle='#0a0a18';
+  g.beginPath();g.ellipse(x-6,y+2,2.5,3,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+6,y+2,2.5,3,0,0,6.28);g.fill();
+  // Flat wide nose
+  g.fillStyle='#2255bb';
+  g.beginPath();g.ellipse(x,y+10,6,3.5,0,0,6.28);g.fill();
+  // Nostrils
+  g.fillStyle='#1a3388';
+  g.beginPath();g.ellipse(x-3,y+10,1.8,1.2,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+3,y+10,1.8,1.2,0,0,6.28);g.fill();
+  // Mouth (big grin with teeth)
+  g.fillStyle='#cc3333';
+  g.beginPath();g.arc(x,y+14,7,0.1,Math.PI-0.1);g.closePath();g.fill();
+  g.fillStyle='#ffffff';
+  [-4,-1,2,5].forEach(function(tx){
+    g.beginPath();
+    g.moveTo(x+tx,y+14);
+    g.lineTo(x+tx+1.5,y+18);
+    g.lineTo(x+tx+3,y+14);
+    g.closePath();g.fill();
+  });
+  // Antennae (small bumps on head top)
+  g.fillStyle='#3366bb';
+  g.beginPath();g.ellipse(x-5,y-13,3,4,-0.2,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+5,y-13,3,4,0.2,0,6.28);g.fill();
+}
+
 // ── CHARACTER SECTIONS ────────────────────────────────────────
 var SECTIONS=[
   {label:'🏰 Disney',col:'#ff9ed2',
    chars:[{name:'Marie',draw:drawMarie},{name:'Angel',draw:drawAngel},
-          {name:'Charlotte',draw:drawCharlotte},{name:'Pearl',draw:drawPearl},{name:'Piglet',draw:drawPiglet}]},
+          {name:'Charlotte',draw:drawCharlotte},{name:'Pearl',draw:drawPearl},{name:'Piglet',draw:drawPiglet},
+          {name:'Stitch',draw:drawStitch}]},
   {label:'⚡ Pokémon',col:'#aaffcc',
    chars:[{name:'Sylveon',draw:drawSylveon},{name:'Mew',draw:drawMew},{name:'Pikachu',draw:drawPikachu}]},
   {label:'✨ Other',col:'#ddaaff',
