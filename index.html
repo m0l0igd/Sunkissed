@@ -2310,6 +2310,95 @@ function drawPikachu(x,y){
   g.beginPath();g.arc(x+13,y+7,2,0,6.28);g.fill();
 }
 
+// ★ YOUNG SIMBA (The Lion King)
+function drawSimba(x,y){
+  // Tail — curling up behind him (drawn first)
+  g.strokeStyle='#d4860a';g.lineWidth=5;g.lineCap='round';
+  g.beginPath();
+  g.moveTo(x+10,y+38);
+  g.bezierCurveTo(x+28,y+30,x+34,y+12,x+26,y+4);
+  g.stroke();
+  // Dark tail tuft
+  g.fillStyle='#6a3200';
+  g.beginPath();g.ellipse(x+25,y+2,5,6,0.3,0,6.28);g.fill();
+  // Body
+  g.fillStyle='#e8a820';
+  g.beginPath();g.ellipse(x,y+26,15,14,0,0,6.28);g.fill();
+  // Cream belly
+  g.fillStyle='#f5d88a';
+  g.beginPath();g.ellipse(x,y+28,9,9,0,0,6.28);g.fill();
+  // Front legs
+  g.fillStyle='#e8a820';
+  g.beginPath();g.ellipse(x-8,y+37,5,8,0.1,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8,y+37,5,8,-0.1,0,6.28);g.fill();
+  // Paws
+  g.fillStyle='#d49018';
+  g.beginPath();g.ellipse(x-9,y+44,7,4,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+9,y+44,7,4,0,0,6.28);g.fill();
+  // Paw toes
+  g.fillStyle='#c07f10';
+  [-3,0,3].forEach(function(tx){
+    g.beginPath();g.ellipse(x-9+tx,y+46,1.5,1.2,0,0,6.28);g.fill();
+    g.beginPath();g.ellipse(x+9+tx,y+46,1.5,1.2,0,0,6.28);g.fill();
+  });
+  // Small front arms reaching out
+  g.fillStyle='#e8a820';
+  g.beginPath();g.ellipse(x-17,y+24,5,4,0.5,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+17,y+24,5,4,-0.5,0,6.28);g.fill();
+  // Big round cub head
+  g.fillStyle='#e8a820';
+  g.beginPath();g.arc(x,y+5,20,0,6.28);g.fill();
+  // Ears
+  g.fillStyle='#e8a820';
+  g.beginPath();g.ellipse(x-15,y-10,8,7,-0.3,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+15,y-10,8,7,0.3,0,6.28);g.fill();
+  // Ear inner
+  g.fillStyle='rgba(200,100,80,.7)';
+  g.beginPath();g.ellipse(x-15,y-10,4.5,4,-0.3,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+15,y-10,4.5,4,0.3,0,6.28);g.fill();
+  // Forehead tuft (baby mane!)
+  g.fillStyle='#a05010';
+  g.beginPath();g.moveTo(x-8,y-12);g.bezierCurveTo(x-6,y-22,x,y-26,x+6,y-22);g.bezierCurveTo(x+8,y-18,x+4,y-14,x,y-13);g.bezierCurveTo(x-4,y-14,x-8,y-16,x-8,y-12);g.closePath();g.fill();
+  // Tuft wisps
+  g.strokeStyle='#7a3800';g.lineWidth=1.5;g.lineCap='round';
+  g.beginPath();g.moveTo(x-4,y-14);g.lineTo(x-6,y-22);g.stroke();
+  g.beginPath();g.moveTo(x,y-14);g.lineTo(x,y-26);g.stroke();
+  g.beginPath();g.moveTo(x+4,y-14);g.lineTo(x+5,y-21);g.stroke();
+  // Cream muzzle
+  g.fillStyle='#f5d88a';
+  g.beginPath();g.ellipse(x,y+12,11,9,0,0,6.28);g.fill();
+  // Brown nose
+  g.fillStyle='#6a2800';
+  g.beginPath();g.ellipse(x,y+7,5,3.5,0,0,6.28);g.fill();
+  g.fillStyle='rgba(255,150,120,.35)';
+  g.beginPath();g.ellipse(x-1.5,y+6,2,1.5,0,0,6.28);g.fill();
+  // Mouth
+  g.strokeStyle='#6a2800';g.lineWidth=1.4;g.lineCap='round';
+  g.beginPath();g.moveTo(x,y+10);g.lineTo(x,y+14);g.stroke();
+  g.beginPath();g.arc(x-4,y+14,4,0,Math.PI*0.7);g.stroke();
+  g.beginPath();g.arc(x+4,y+14,4,Math.PI*0.3,Math.PI);g.stroke();
+  // Big amber eyes
+  g.fillStyle='#1a0a00';
+  g.beginPath();g.ellipse(x-7,y+1,6,7,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+7,y+1,6,7,0,0,6.28);g.fill();
+  // Amber iris
+  g.fillStyle='#c87000';
+  g.beginPath();g.ellipse(x-7,y+1,4,5,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+7,y+1,4,5,0,0,6.28);g.fill();
+  // Pupil
+  g.fillStyle='#0a0500';
+  g.beginPath();g.ellipse(x-7,y+1,2,3,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+7,y+1,2,3,0,0,6.28);g.fill();
+  // Eye shine
+  g.fillStyle='#ffffff';
+  g.beginPath();g.arc(x-9,y-1,1.8,0,6.28);g.fill();
+  g.beginPath();g.arc(x+5,y-1,1.8,0,6.28);g.fill();
+  // Cute blush
+  g.fillStyle='rgba(220,120,80,.3)';
+  g.beginPath();g.ellipse(x-14,y+8,5,3,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+14,y+8,5,3,0,0,6.28);g.fill();
+}
+
 // ★ STITCH (Lilo & Stitch)
 function drawStitch(x,y){
   // Body
@@ -2412,7 +2501,7 @@ var SECTIONS=[
   {label:'🏰 Disney',col:'#ff9ed2',
    chars:[{name:'Marie',draw:drawMarie},{name:'Angel',draw:drawAngel},
           {name:'Charlotte',draw:drawCharlotte},{name:'Pearl',draw:drawPearl},{name:'Piglet',draw:drawPiglet},
-          {name:'Stitch',draw:drawStitch}]},
+          {name:'Stitch',draw:drawStitch},{name:'Simba',draw:drawSimba}]},
   {label:'⚡ Pokémon',col:'#aaffcc',
    chars:[{name:'Sylveon',draw:drawSylveon},{name:'Mew',draw:drawMew},{name:'Pikachu',draw:drawPikachu}]},
   {label:'✨ Other',col:'#ddaaff',
