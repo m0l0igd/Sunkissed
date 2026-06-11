@@ -1819,68 +1819,126 @@ function drawPiglet(x,y){
 }
 
 function drawSylveon(x,y){
-  // Sylveon – Pokémon: ★ cream+pink fairy ribbon Pokemon, ribbon feelers, red bow ★
-  // Ribbon feelers – wave like ribbons
-  var _sfw=_PA.running?_PA.step*10:_PA.idle*4;
-  var _sfwb=_PA.running?-_PA.step*10:_PA.idle*-4;
-  g.strokeStyle='#ff9eb5';g.lineWidth=6;g.lineCap='round';
-  g.beginPath();g.moveTo(x-3,y-10);
-  g.bezierCurveTo(x-26+_sfw,y-6,x-30+_sfwb,y+18,x-24+_sfw*.5,y+32);g.stroke();
-  g.beginPath();g.moveTo(x+3,y-10);
-  g.bezierCurveTo(x+26+_sfwb,y-6,x+30+_sfw,y+18,x+24+_sfwb*.5,y+32);g.stroke();
-  g.strokeStyle='#aac4ff';g.lineWidth=3.5;
-  g.beginPath();g.moveTo(x-5,y-8);
-  g.bezierCurveTo(x-22+_sfwb,y,x-24+_sfw,y+20,x-18+_sfwb*.5,y+34);g.stroke();
-  g.beginPath();g.moveTo(x+5,y-8);
-  g.bezierCurveTo(x+22+_sfw,y,x+24+_sfwb,y+20,x+18+_sfw*.5,y+34);g.stroke();
-  // Feeler paw-hands – follow ribbon tips
-  g.fillStyle='#fff8f0';
-  g.beginPath();g.ellipse(x-24+_sfw*.5,y+32,6,4,-.3,0,6.28);g.fill();
-  g.fillStyle='#aac4ff';
-  g.beginPath();g.ellipse(x-18+_sfwb*.5,y+34,5,3.5,-.2,0,6.28);g.fill();
-  g.fillStyle='#fff8f0';
-  g.beginPath();g.ellipse(x+24+_sfwb*.5,y+32,6,4,.3,0,6.28);g.fill();
-  g.fillStyle='#aac4ff';
-  g.beginPath();g.ellipse(x+18+_sfw*.5,y+34,5,3.5,.2,0,6.28);g.fill();
-  // Body (cream white)
-  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x,y+22,12,14,0,0,6.28);g.fill();
+  // ── Diagonal quadruped gait (same as Simba) ──────────────────
+  var _leap=_PA.reach;
+  var _sq=_PA.running?_PA.step:_PA.idle*0.15;
+  var _sqFR= _PA.air? 0.55+_leap*0.3  : _sq*0.5;
+  var _sqFL= _PA.air? 0.45+_leap*0.25 : 0-_sq*0.5;
+  var _sqBL= _PA.air?(0-(0.5+_leap*0.3)):  _sq*0.48;
+  var _sqBR= _PA.air?(0-(0.4+_leap*0.25)): 0-_sq*0.48;
+  var _kFR = _PA.air?_leap*0.4  : Math.max(0,_sqFR)*0.55;
+  var _kFL = _PA.air?_leap*0.35 : Math.max(0,_sqFL)*0.55;
+  var _kBL = _PA.air?_leap*0.25 : Math.max(0,_sqBL)*0.45;
+  var _kBR = _PA.air?_leap*0.2  : Math.max(0,_sqBR)*0.45;
+
+  // ── Ribbons – flow behind body from neck, wave dynamically ───
+  var _sfw=_PA.running?_PA.step*12:_PA.idle*5;
+  var _sfwb=_PA.running?0-_PA.step*12:_PA.idle*-5;
+  // Main thick ribbon (pink) – trails behind
+  g.strokeStyle='#ff9eb5';g.lineWidth=7;g.lineCap='round';
+  g.beginPath();g.moveTo(x+8,y+18);
+  g.bezierCurveTo(x-8+_sfwb,y+14,x-22+_sfw*.5,y+28,x-30+_sfwb*.6,y+38);g.stroke();
+  // Second ribbon (blue)
+  g.strokeStyle='#aac4ff';g.lineWidth=4;
+  g.beginPath();g.moveTo(x+6,y+17);
+  g.bezierCurveTo(x-4+_sfw*.3,y+10,x-18+_sfwb*.4,y+22,x-28+_sfw*.5,y+32);g.stroke();
+  // Ribbon tip paws
+  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x-30+_sfwb*.6,y+38,6,4,-.3,0,6.28);g.fill();
+  g.fillStyle='#aac4ff';g.beginPath();g.ellipse(x-28+_sfw*.5,y+32,5,3.5,-.2,0,6.28);g.fill();
+
+  // ── Fluffy tail – curls up from rump ─────────────────────────
+  var _stw=_PA.running?_PA.step*9:_PA.idle*4;
+  g.strokeStyle='#ffb3c6';g.lineWidth=8;g.lineCap='round';
+  g.beginPath();g.moveTo(x-13,y+22);
+  g.bezierCurveTo(x-24+_stw,y+14,x-20+_stw*.5,y+4,x-14+_stw*.3,y+2);g.stroke();
+  // Tail tip
+  g.fillStyle='#fff8f0';g.beginPath();g.arc(x-14+_stw*.3,y+2,6,0,6.28);g.fill();
+  g.fillStyle='#ffb3c6';g.beginPath();g.arc(x-14+_stw*.3,y+2,4,0,6.28);g.fill();
+
+  // ── FAR legs – faded for depth ───────────────────────────────
+  g.globalAlpha=0.5;
+  // Far back leg
+  g.save();g.translate(x-9,y+27);g.rotate(_sqBR);
+  g.fillStyle='#f0c8d8';g.beginPath();g.ellipse(0,4,3.5,7,0,0,6.28);g.fill();
+  g.save();g.translate(0,8);g.rotate(_kBR);
+  g.beginPath();g.ellipse(0,3,3,5,0,0,6.28);g.fill();
+  g.fillStyle='#ffb3c6';g.beginPath();g.ellipse(0,7,5,3,0,0,6.28);g.fill();
+  g.restore();g.restore();
+  // Far front leg
+  g.save();g.translate(x+9,y+27);g.rotate(_sqFL);
+  g.fillStyle='#f0c8d8';g.beginPath();g.ellipse(0,4,3.5,7,0,0,6.28);g.fill();
+  g.save();g.translate(0,8);g.rotate(_kFL);
+  g.beginPath();g.ellipse(0,3,3,5,0,0,6.28);g.fill();
+  g.fillStyle='#ffb3c6';g.beginPath();g.ellipse(0,7,5,3,0,0,6.28);g.fill();
+  g.restore();g.restore();
+  g.globalAlpha=1;
+
+  // ── Body – horizontal cream oval ─────────────────────────────
+  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x,y+25,18,10,-0.1,0,6.28);g.fill();
   // Cream belly
-  g.fillStyle='#ffe8f0';g.beginPath();g.ellipse(x,y+24,7,9,0,0,6.28);g.fill();
-  // Pink paws – step
-  var _spL=_PA.running?_PA.step*5:0,_spR=_PA.running?-_PA.step*5:0;
-  fC(x-8+_spL,y+34-Math.abs(_spL)*.3,5,'#ffb3c6');
-  fC(x+8+_spR,y+34-Math.abs(_spR)*.3,5,'#ffb3c6');
-  // Red collar + blue gem
-  g.strokeStyle='#cc2244';g.lineWidth=4;g.beginPath();g.arc(x,y+11,10,Math.PI*.1,Math.PI*.9);g.stroke();
-  fC(x,y+13,3.5,'#4d8fff');
-  // Head
-  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(x,y+2,14,13,0,0,6.28);g.fill();
-  // Cat ears + pink inner
+  g.fillStyle='#ffe8f0';g.beginPath();g.ellipse(x+2,y+27,10,6,-0.08,0,6.28);g.fill();
+
+  // ── NEAR back leg ────────────────────────────────────────────
+  g.save();g.translate(x-10,y+27);g.rotate(_sqBL);
+  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(0,4,4,8,0,0,6.28);g.fill();
+  g.save();g.translate(0,9);g.rotate(_kBL);
+  g.fillStyle='#ffe0ec';g.beginPath();g.ellipse(0,3,3.5,6,0,0,6.28);g.fill();
+  g.fillStyle='#ffb3c6';g.beginPath();g.ellipse(0,8,5.5,3,0,0,6.28);g.fill();
+  g.restore();g.restore();
+
+  // ── NEAR front leg ───────────────────────────────────────────
+  g.save();g.translate(x+10,y+27);g.rotate(_sqFR);
+  g.fillStyle='#fff8f0';g.beginPath();g.ellipse(0,4,4,8,0,0,6.28);g.fill();
+  g.save();g.translate(0,9);g.rotate(_kFR);
+  g.fillStyle='#ffe0ec';g.beginPath();g.ellipse(0,3,3.5,6,0,0,6.28);g.fill();
+  g.fillStyle='#ffb3c6';g.beginPath();g.ellipse(0,8,5.5,3,0,0,6.28);g.fill();
+  g.restore();g.restore();
+
+  // Red collar + blue gem (on neck)
+  g.strokeStyle='#cc2244';g.lineWidth=4;g.lineCap='round';
+  g.beginPath();g.arc(x+11,y+20,8,Math.PI*0.6,Math.PI*1.4);g.stroke();
+  fC(x+11,y+22,3,'#4d8fff');
+
+  // Neck
+  g.strokeStyle='#ffe8f0';g.lineWidth=9;g.lineCap='round';
+  g.beginPath();g.moveTo(x+10,y+20);g.lineTo(x+17,y+14);g.stroke();
+
+  // ── Head at front of body ─────────────────────────────────────
+  g.fillStyle='#fff8f0';g.beginPath();g.arc(x+17,y+11,13,0,6.28);g.fill();
+
+  // Back ear (left side of head)
   g.fillStyle='#fff8f0';
-  g.beginPath();g.moveTo(x-11,y-9);g.lineTo(x-17,y-24);g.lineTo(x-4,y-11);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+11,y-9);g.lineTo(x+17,y-24);g.lineTo(x+4,y-11);g.closePath();g.fill();
+  g.beginPath();g.moveTo(x+8,y+2);g.lineTo(x+5,y-12);g.lineTo(x+14,y+1);g.closePath();g.fill();
   g.fillStyle='#ffb3c6';
-  g.beginPath();g.moveTo(x-10,y-10);g.lineTo(x-14,y-21);g.lineTo(x-5,y-12);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+10,y-10);g.lineTo(x+14,y-21);g.lineTo(x+5,y-12);g.closePath();g.fill();
-  // ★ ICONIC red+white bow on head ★
+  g.beginPath();g.moveTo(x+9,y+2);g.lineTo(x+7,y-9);g.lineTo(x+13,y+2);g.closePath();g.fill();
+
+  // Forward ear (right side of head)
+  g.fillStyle='#fff8f0';
+  g.beginPath();g.moveTo(x+22,y+1);g.lineTo(x+27,y-13);g.lineTo(x+30,y+2);g.closePath();g.fill();
+  g.fillStyle='#ffb3c6';
+  g.beginPath();g.moveTo(x+23,y+2);g.lineTo(x+27,y-9);g.lineTo(x+29,y+3);g.closePath();g.fill();
+
+  // ★ Iconic red bow on head ★
   g.fillStyle='#cc2244';
-  g.beginPath();g.moveTo(x,y-13);g.bezierCurveTo(x-11,y-22,x-15,y-13,x,y-13);g.fill();
-  g.beginPath();g.moveTo(x,y-13);g.bezierCurveTo(x+11,y-22,x+15,y-13,x,y-13);g.fill();
-  fC(x,y-13,4,'#fff8f0');// white bow centre
-  // Blue eyes with lashes
-  fC(x-5,y+3,5,'#fff');fC(x+5,y+3,5,'#fff');
-  fC(x-5,y+3,4,'#72c4e8');fC(x+5,y+3,4,'#72c4e8');
-  fC(x-5,y+3,2.5,'#0d2240');fC(x+5,y+3,2.5,'#0d2240');
-  fC(x-4,y+1.5,1.5,'#fff');fC(x+4,y+1.5,1.5,'#fff');
-  // Lash lines
-  g.strokeStyle='#0d2240';g.lineWidth=1.2;
-  [[-9,y-1,-11,y-4],[-6,y-2,-7,y-5],[-3,y-2,-2,y-5]].forEach(function(l){
-    g.beginPath();g.moveTo(x+l[0],l[1]);g.lineTo(x+l[2],l[3]);g.stroke();
-    g.beginPath();g.moveTo(x-l[0],l[1]);g.lineTo(x-l[2],l[3]);g.stroke();
-  });
-  // Tiny pink nose
-  fC(x,y+7,2,'#ffb3c6');
+  g.beginPath();g.moveTo(x+17,y+0);g.bezierCurveTo(x+6,y-9,x+3,y+0,x+17,y+0);g.fill();
+  g.beginPath();g.moveTo(x+17,y+0);g.bezierCurveTo(x+28,y-9,x+31,y+0,x+17,y+0);g.fill();
+  fC(x+17,y+0,3.5,'#fff8f0');
+
+  // Side-profile face: far eye small, near eye large
+  // Far eye (back of head, small)
+  fC(x+11,y+9,3,'#fff');fC(x+11,y+9,2.2,'#72c4e8');fC(x+11,y+9,1.3,'#0d2240');
+  // Near eye (forward, large + lashes)
+  fC(x+21,y+8,5,'#fff');fC(x+21,y+8,4,'#72c4e8');fC(x+21,y+8,2.5,'#0d2240');
+  fC(x+19,y+6,1.5,'#fff');// sparkle
+  g.strokeStyle='#0d2240';g.lineWidth=1.2;g.lineCap='round';
+  // Lashes on near eye only
+  g.beginPath();g.moveTo(x+18,y+4);g.lineTo(x+16,y+1);g.stroke();
+  g.beginPath();g.moveTo(x+21,y+3);g.lineTo(x+20,y+0);g.stroke();
+  g.beginPath();g.moveTo(x+24,y+4);g.lineTo(x+26,y+1);g.stroke();
+  // Tiny pink nose on forward side
+  fC(x+28,y+12,2,'#ffb3c6');
 }
+
 
 function drawMew(x,y){
   // Mew – Pokémon: ★ tiny round pink psychic, HUGE teal eyes, long curling tail ★
