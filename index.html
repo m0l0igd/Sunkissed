@@ -16,8 +16,9 @@ canvas{display:block;image-rendering:pixelated;border:2px solid #c9956c;
     display:flex;align-items:center;justify-content:center;flex-direction:column;
     user-select:none;cursor:pointer;touch-action:none;
     box-shadow:0 0 10px rgba(220,100,160,.3);transition:background .1s}
-.diag{opacity:.72;font-size:13px;background:rgba(120,55,25,.36);
-      border-color:rgba(220,160,110,.45);color:rgba(255,230,200,.85);}
+.diag{font-size:13px;background:rgba(120,55,25,.55);
+      border-color:rgba(220,160,110,.65);color:rgba(255,230,200,.95);
+      pointer-events:all;}
 .dpe{width:46px;height:46px}
 #dpad{position:absolute;bottom:8px;left:8px;display:grid;
       grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px 46px;gap:3px;pointer-events:all}
@@ -43,15 +44,15 @@ canvas{display:block;image-rendering:pixelated;border:2px solid #c9956c;
 <div id="touch-ui">
   <!-- LEFT: 8-direction d-pad -->
   <div id="dpad">
-    <div class="tb diag" id="b-ul">↖</div>
-    <div class="tb" id="b-up">▲</div>
-    <div class="tb diag" id="b-ur">↗</div>
-    <div class="tb" id="b-left">◄</div>
+    <div class="tb diag" id="b-ul" style="touch-action:none">↖</div>
+    <div class="tb" id="b-up" style="touch-action:none">▲</div>
+    <div class="tb diag" id="b-ur" style="touch-action:none">↗</div>
+    <div class="tb" id="b-left" style="touch-action:none">◄</div>
     <div class="dpe"></div>
-    <div class="tb" id="b-right">►</div>
-    <div class="tb diag" id="b-dl">↙</div>
-    <div class="tb" id="b-down">▼</div>
-    <div class="tb diag" id="b-dr">↘</div>
+    <div class="tb" id="b-right" style="touch-action:none">►</div>
+    <div class="tb diag" id="b-dl" style="touch-action:none">↙</div>
+    <div class="tb" id="b-down" style="touch-action:none">▼</div>
+    <div class="tb diag" id="b-dr" style="touch-action:none">↘</div>
   </div>
   <!-- RIGHT: blast + special stacked -->
   <div id="tr">
