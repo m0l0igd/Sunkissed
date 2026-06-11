@@ -1579,31 +1579,33 @@ function drawMarie(x,y){
   g.beginPath();g.ellipse(x+7+_mrp,y+39+_mly,5,3.5,_mrp*.04,0,6.28);g.fill();
   // Head – round & fluffy
   g.fillStyle='#fffafa';g.beginPath();g.ellipse(x,y+4,18,17,0,0,6.28);g.fill();
-  // Pointed ears
+  // Back ear (left = behind)
   g.fillStyle='#fffafa';
-  g.beginPath();g.moveTo(x-16,y-8);g.lineTo(x-10,y-26);g.lineTo(x-2,y-9);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+16,y-8);g.lineTo(x+10,y-26);g.lineTo(x+2,y-9);g.closePath();g.fill();
+  g.beginPath();g.moveTo(x-10,y-6);g.lineTo(x-14,y-22);g.lineTo(x-2,y-8);g.closePath();g.fill();
   g.fillStyle='#ffc0d8';
-  g.beginPath();g.moveTo(x-13,y-9);g.lineTo(x-9,y-22);g.lineTo(x-4,y-10);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+13,y-9);g.lineTo(x+9,y-22);g.lineTo(x+4,y-10);g.closePath();g.fill();
-  // Face base
-  g.fillStyle='#fffafa';g.beginPath();g.ellipse(x,y+5,16,15,0,0,6.28);g.fill();
-  // Blue almond eyes
-  g.fillStyle='#a8d8f0';g.beginPath();g.ellipse(x-6,y+3,5,4,-.2,0,6.28);g.fill();
-  g.fillStyle='#a8d8f0';g.beginPath();g.ellipse(x+6,y+3,5,4,.2,0,6.28);g.fill();
-  g.fillStyle='#1a3a5c';g.beginPath();g.ellipse(x-6,y+3,3,3.2,0,0,6.28);g.fill();
-  g.fillStyle='#1a3a5c';g.beginPath();g.ellipse(x+6,y+3,3,3.2,0,0,6.28);g.fill();
-  fC(x-4.5,y+1.5,1.2,'#fff');fC(x+4.5,y+1.5,1.2,'#fff');
-  // Pink button nose
-  fC(x,y+9,3,'#f4a0b8');
-  // Whiskers
+  g.beginPath();g.moveTo(x-9,y-7);g.lineTo(x-12,y-18);g.lineTo(x-3,y-9);g.closePath();g.fill();
+  // Forward ear (right = front)
+  g.fillStyle='#fffafa';
+  g.beginPath();g.moveTo(x+6,y-8);g.lineTo(x+10,y-24);g.lineTo(x+17,y-7);g.closePath();g.fill();
+  g.fillStyle='#ffc0d8';
+  g.beginPath();g.moveTo(x+8,y-9);g.lineTo(x+10,y-19);g.lineTo(x+15,y-8);g.closePath();g.fill();
+  // Face base – shifted right (forward)
+  g.fillStyle='#fffafa';g.beginPath();g.ellipse(x+4,y+4,15,14,0,0,6.28);g.fill();
+  // Far eye – small, near back of head
+  g.fillStyle='#a8d8f0';g.beginPath();g.ellipse(x-2,y+3,3,2.5,-.1,0,6.28);g.fill();
+  g.fillStyle='#1a3a5c';g.beginPath();g.ellipse(x-2,y+3,1.8,2,0,0,6.28);g.fill();
+  // Near eye – large, forward-facing
+  g.fillStyle='#a8d8f0';g.beginPath();g.ellipse(x+9,y+2,5,4,-.2,0,6.28);g.fill();
+  g.fillStyle='#1a3a5c';g.beginPath();g.ellipse(x+9,y+2,3,3.2,0,0,6.28);g.fill();
+  fC(x+7,y+0.5,1.2,'#fff');
+  // Nose – on the forward side
+  fC(x+15,y+8,3,'#f4a0b8');
+  // Whiskers – pointing forward (right)
   g.strokeStyle='rgba(160,140,140,.7)';g.lineWidth=.9;
-  g.beginPath();g.moveTo(x-4,y+9);g.lineTo(x-22,y+6);g.stroke();
-  g.beginPath();g.moveTo(x-4,y+10);g.lineTo(x-22,y+11);g.stroke();
-  g.beginPath();g.moveTo(x+4,y+9);g.lineTo(x+22,y+6);g.stroke();
-  g.beginPath();g.moveTo(x+4,y+10);g.lineTo(x+22,y+11);g.stroke();
-  // Rosy cheeks
-  g.globalAlpha=.28;fC(x-11,y+8,5,'#ffb0cc');fC(x+11,y+8,5,'#ffb0cc');g.globalAlpha=1;
+  g.beginPath();g.moveTo(x+13,y+7);g.lineTo(x+28,y+5);g.stroke();
+  g.beginPath();g.moveTo(x+13,y+9);g.lineTo(x+28,y+10);g.stroke();
+  // Rosy cheek – forward side only
+  g.globalAlpha=.3;fC(x+14,y+7,5,'#ffb0cc');g.globalAlpha=1;
   // ★ ICONIC: 3-loop pink bow at crown ★
   g.fillStyle='#ff87b2';
   // left loop
@@ -1654,14 +1656,14 @@ function drawAngel(x,y){
   fC(x-7,y-5,3.5,'#cc0055');fC(x+7,y-5,3.5,'#cc0055');fC(x,y-9,3,'#cc0055');
   // Spots on ears
   fC(x-18,y+14,3,'#cc0055');fC(x+18,y+14,3,'#cc0055');
-  // Violet eyes
-  fC(x-5,y+4,5,'#fff');fC(x+5,y+4,5,'#fff');
-  fC(x-5,y+4,3.8,'#7744cc');fC(x+5,y+4,3.8,'#7744cc');
-  fC(x-5,y+4,2.2,'#110022');fC(x+5,y+4,2.2,'#110022');
-  fC(x-3.5,y+2.5,1.2,'#fff');fC(x+3.5,y+2.5,1.2,'#fff');
-  // Snout
-  g.fillStyle='#ffcce8';g.beginPath();g.ellipse(x,y+9,5.5,4,0,0,6.28);g.fill();
-  fC(x-2,y+9,1.5,'#cc6688');fC(x+2,y+9,1.5,'#cc6688');
+  // Far eye – small
+  fC(x-2,y+4,3,'#fff');fC(x-2,y+4,2.2,'#7744cc');fC(x-2,y+4,1.3,'#110022');
+  // Near eye – large, forward side
+  fC(x+8,y+3,5,'#fff');fC(x+8,y+3,3.8,'#7744cc');fC(x+8,y+3,2.2,'#110022');
+  fC(x+6.5,y+1.5,1.2,'#fff');
+  // Snout – forward side
+  g.fillStyle='#ffcce8';g.beginPath();g.ellipse(x+11,y+9,5.5,4,0,0,6.28);g.fill();
+  fC(x+10,y+9,1.5,'#cc6688');fC(x+13,y+9,1.5,'#cc6688');
   // Tiny wings – flap
   var _awf=_PA.air?(0.7+_PA.reach*0.35):(_PA.running?Math.abs(_PA.step)*0.5:_PA.idle*0.15);
   g.globalAlpha=.5+Math.abs(_awf)*.3;g.fillStyle='#ffe0f0';
@@ -1712,28 +1714,29 @@ function drawCharlotte(x,y){
    [x-10,y-12,8,11,.2],[x+10,y-12,8,11,-.2],[x,y-16,10,12,0]].forEach(function(e2){
     g.beginPath();g.ellipse(e2[0],e2[1],e2[2],e2[3],e2[4],0,6.28);g.fill();
   });
-  // Face (peach skin)
-  fC(x,y+2,12,'#fde0c0');
+  // Face (peach skin) – shifted slightly forward
+  fC(x+3,y+2,12,'#fde0c0');
   // Tiara
   g.strokeStyle='#ffd700';g.lineWidth=2.5;
   g.beginPath();g.moveTo(x-12,y-19);g.lineTo(x-12,y-28);
   g.lineTo(x-5,y-23);g.lineTo(x,y-32);g.lineTo(x+5,y-23);
   g.lineTo(x+12,y-28);g.lineTo(x+12,y-19);g.stroke();
   fC(x,y-32,3,'#ff88cc');fC(x-12,y-28,2,'#88ccff');fC(x+12,y-28,2,'#88ccff');
-  // Eyes + lashes
-  fC(x-4,y+2,4,'#fff');fC(x+4,y+2,4,'#fff');
-  fC(x-4,y+2,3,'#4488aa');fC(x+4,y+2,3,'#4488aa');
-  fC(x-4,y+2,2,'#111');fC(x+4,y+2,2,'#111');
-  fC(x-3,y+1,1.2,'#fff');fC(x+3,y+1,1.2,'#fff');
+  // Eyes + lashes – side profile
+  // Far eye – small, near back of head
+  fC(x+0,y+2,2.5,'#fff');fC(x+0,y+2,1.8,'#4488aa');fC(x+0,y+2,1.1,'#111');
+  // Near eye – larger, forward side
+  fC(x+8,y+2,4,'#fff');fC(x+8,y+2,3,'#4488aa');fC(x+8,y+2,2,'#111');
+  fC(x+6.5,y+0.5,1.2,'#fff');
   g.strokeStyle='#222';g.lineWidth=1;
-  [[-6,y-1,-9,y-4],[-4,y-2,-5,y-5],[-2,y-1,-2,y-5]].forEach(function(l){
-    g.beginPath();g.moveTo(x+l[0],l[1]);g.lineTo(x+l[2],l[3]);g.stroke();
-    g.beginPath();g.moveTo(x-l[0],l[1]);g.lineTo(x-l[2],l[3]);g.stroke();
+  // Lashes on near eye only
+  [[-2,y-2,-4,y-5],[0,y-2,-1,y-6],[2,y-2,3,y-5]].forEach(function(l){
+    g.beginPath();g.moveTo(x+8+l[0],l[1]);g.lineTo(x+8+l[2],l[3]);g.stroke();
   });
-  // Hot pink lips
+  // Lips – forward side
   g.fillStyle='#e8275e';
-  g.beginPath();g.moveTo(x-4,y+8);g.quadraticCurveTo(x,y+6,x+4,y+8);
-  g.quadraticCurveTo(x,y+12,x-4,y+8);g.closePath();g.fill();
+  g.beginPath();g.moveTo(x+6,y+8);g.quadraticCurveTo(x+10,y+6,x+14,y+8);
+  g.quadraticCurveTo(x+10,y+12,x+6,y+8);g.closePath();g.fill();
 }
 
 function drawPearl(x,y){
@@ -1782,29 +1785,29 @@ function drawPiglet(x,y){
   g.restore();
   // Head
   g.fillStyle='#f2a7c3';g.beginPath();g.ellipse(x,y+1,15,14,0,0,6.28);g.fill();
-  // Floppy ears – flap
+  // Back ear (left = behind) – floppy, angled back
   var _pef=_PA.running?_PA.step*0.35:_PA.idle*0.1;
   g.fillStyle='#f2a7c3';
-  g.save();g.translate(x-13,y-6);g.rotate(_pef);
-  g.beginPath();g.ellipse(0,-7,9,11,-.3,0,6.28);g.fill();
-  g.fillStyle='#e896b8';g.beginPath();g.ellipse(0,-7,5.5,7.5,-.3,0,6.28);g.fill();
+  g.save();g.translate(x-10,y-6);g.rotate(_pef-0.3);
+  g.beginPath();g.ellipse(0,-6,7,9,-.4,0,6.28);g.fill();
+  g.fillStyle='#e896b8';g.beginPath();g.ellipse(0,-6,4,6,-.4,0,6.28);g.fill();
   g.restore();
+  // Forward ear (right = front)
   g.fillStyle='#f2a7c3';
-  g.save();g.translate(x+13,y-6);g.rotate(-_pef);
-  g.beginPath();g.ellipse(0,-7,9,11,.3,0,6.28);g.fill();
-  g.fillStyle='#e896b8';g.beginPath();g.ellipse(0,-7,5.5,7.5,.3,0,6.28);g.fill();
+  g.save();g.translate(x+10,y-7);g.rotate(-_pef+0.15);
+  g.beginPath();g.ellipse(0,-6,9,11,.3,0,6.28);g.fill();
+  g.fillStyle='#e896b8';g.beginPath();g.ellipse(0,-6,5.5,7.5,.3,0,6.28);g.fill();
   g.restore();
-  // Eyes
-  fC(x-5,y+1,4,'#fff');fC(x+5,y+1,4,'#fff');
-  fC(x-5,y+1,3,'#3366aa');fC(x+5,y+1,3,'#3366aa');
-  fC(x-5,y+1,1.8,'#111');fC(x+5,y+1,1.8,'#111');
-  fC(x-4,y,1.1,'#fff');fC(x+4,y,1.1,'#fff');
-  // Round pig snout (very prominent)
-  g.fillStyle='#e896b8';g.beginPath();g.ellipse(x,y+7,7,5.5,0,0,6.28);g.fill();
-  fC(x-2.5,y+7,1.8,'#b05070');fC(x+2.5,y+7,1.8,'#b05070');// nostrils
-  // Smile
+  // Far eye – small
+  fC(x-1,y+1,2.5,'#fff');fC(x-1,y+1,1.8,'#3366aa');fC(x-1,y+1,1.1,'#111');
+  // Near eye – larger, forward side
+  fC(x+8,y+0,4,'#fff');fC(x+8,y+0,3,'#3366aa');fC(x+8,y+0,1.8,'#111');
+  fC(x+6.5,y-1,1.1,'#fff');
+  // Snout – shifted forward
+  g.fillStyle='#e896b8';g.beginPath();g.ellipse(x+10,y+7,7,5.5,0,0,6.28);g.fill();
+  fC(x+7.5,y+7,1.8,'#b05070');fC(x+12.5,y+7,1.8,'#b05070');
   g.strokeStyle='#b05070';g.lineWidth=1.5;
-  g.beginPath();g.arc(x,y+8,5,.1,Math.PI-.1);g.stroke();
+  g.beginPath();g.arc(x+11,y+8,4,.1,Math.PI*.8);g.stroke();
   // Little arms – swing
   var _paa=_PA.air?(0-1.1-_PA.reach*0.4):(_PA.running?-_PA.step*0.5:_PA.idle*0.12);
   g.fillStyle='#f2a7c3';
@@ -1966,24 +1969,25 @@ function drawMew(x,y){
   fC(x+7+_mlR,y+35-Math.abs(_mlR)*.3,5,'#f4a0bc');
   // Round head (baby proportions)
   g.fillStyle='#f4a0bc';g.beginPath();g.arc(x,y+4,17,0,6.28);g.fill();
-  // Tiny triangular ears
+  // Back ear – angled away
   g.fillStyle='#ee88aa';
-  g.beginPath();g.moveTo(x-13,y-6);g.lineTo(x-17,y-20);g.lineTo(x-5,y-9);g.closePath();g.fill();
-  g.beginPath();g.moveTo(x+13,y-6);g.lineTo(x+17,y-20);g.lineTo(x+5,y-9);g.closePath();g.fill();
-  // Face re-draw over ears
-  g.fillStyle='#f4a0bc';g.beginPath();g.arc(x,y+4,15,0,6.28);g.fill();
-  // ★ ICONIC: enormous teal oval eyes ★
-  g.fillStyle='#fff';g.beginPath();g.ellipse(x-6,y+3,7,8,0,0,6.28);g.fill();
-  g.fillStyle='#fff';g.beginPath();g.ellipse(x+6,y+3,7,8,0,0,6.28);g.fill();
-  g.fillStyle='#4dd0e1';g.beginPath();g.ellipse(x-6,y+3,5.5,6.5,0,0,6.28);g.fill();
-  g.fillStyle='#4dd0e1';g.beginPath();g.ellipse(x+6,y+3,5.5,6.5,0,0,6.28);g.fill();
-  fC(x-6,y+3,3.5,'#0a1a20');fC(x+6,y+3,3.5,'#0a1a20');
-  fC(x-4,y,2,'#fff');fC(x+4,y,2,'#fff');// sparkle
-  fC(x-7,y+5,1,'#fff');fC(x+7,y+5,1,'#fff');
-  // Tiny nose + smile
-  fC(x,y+10,1.8,'#ee88aa');
+  g.beginPath();g.moveTo(x-8,y-5);g.lineTo(x-12,y-18);g.lineTo(x-1,y-8);g.closePath();g.fill();
+  // Forward ear
+  g.beginPath();g.moveTo(x+8,y-5);g.lineTo(x+14,y-20);g.lineTo(x+18,y-7);g.closePath();g.fill();
+  // Face re-draw
+  g.fillStyle='#f4a0bc';g.beginPath();g.arc(x+2,y+4,15,0,6.28);g.fill();
+  // Far eye – small
+  g.fillStyle='#fff';g.beginPath();g.ellipse(x-3,y+3,4,5,0,0,6.28);g.fill();
+  g.fillStyle='#4dd0e1';g.beginPath();g.ellipse(x-3,y+3,3,4,0,0,6.28);g.fill();
+  fC(x-3,y+3,2,'#0a1a20');fC(x-4,y+1,1,'#fff');
+  // Near eye – ENORMOUS teal, on forward side
+  g.fillStyle='#fff';g.beginPath();g.ellipse(x+10,y+2,7,8,0,0,6.28);g.fill();
+  g.fillStyle='#4dd0e1';g.beginPath();g.ellipse(x+10,y+2,5.5,6.5,0,0,6.28);g.fill();
+  fC(x+10,y+2,3.5,'#0a1a20');fC(x+8,y-1,2,'#fff');fC(x+11,y+5,1,'#fff');
+  // Nose + smile – forward
+  fC(x+15,y+9,1.8,'#ee88aa');
   g.strokeStyle='#ee88aa';g.lineWidth=1.5;
-  g.beginPath();g.arc(x,y+12,3,.1,Math.PI-.1);g.stroke();
+  g.beginPath();g.arc(x+14,y+11,3,.1,Math.PI*.75);g.stroke();
 }
 
 function drawFlora(x,y){
@@ -2130,17 +2134,19 @@ function drawBlossom(x,y){
   g.fillStyle='#111';g.fillRect(x-13,y+36,26,5);
   // White collar
   g.fillStyle='#fff';g.beginPath();g.moveTo(x-10,y+22);g.lineTo(x-6,y+30);g.lineTo(x+6,y+30);g.lineTo(x+10,y+22);g.closePath();g.fill();
-  // ★ ICONIC: giant oval PPG eyes ★
-  g.fillStyle='#fff';g.beginPath();g.ellipse(x-8,y+4,9,10,0,0,6.28);g.fill();
-  g.fillStyle='#fff';g.beginPath();g.ellipse(x+8,y+4,9,10,0,0,6.28);g.fill();
-  g.fillStyle='#ff66aa';g.beginPath();g.ellipse(x-8,y+4,7,8,0,0,6.28);g.fill();
-  g.fillStyle='#ff66aa';g.beginPath();g.ellipse(x+8,y+4,7,8,0,0,6.28);g.fill();
-  g.fillStyle='#111';g.beginPath();g.ellipse(x-8,y+4,4.5,5.5,0,0,6.28);g.fill();
-  g.fillStyle='#111';g.beginPath();g.ellipse(x+8,y+4,4.5,5.5,0,0,6.28);g.fill();
-  fC(x-5.5,y+1,2.5,'#fff');fC(x+5.5,y+1,2.5,'#fff');// sparkle
-  // PPG line mouth
+  // Far eye – small, near back of head
+  g.fillStyle='#fff';g.beginPath();g.ellipse(x-4,y+4,5,6,0,0,6.28);g.fill();
+  g.fillStyle='#ff66aa';g.beginPath();g.ellipse(x-4,y+4,3.5,4.5,0,0,6.28);g.fill();
+  g.fillStyle='#111';g.beginPath();g.ellipse(x-4,y+4,2,2.8,0,0,6.28);g.fill();
+  fC(x-5.5,y+2,1.2,'#fff');
+  // Near eye – large, on forward side
+  g.fillStyle='#fff';g.beginPath();g.ellipse(x+10,y+3,9,10,0,0,6.28);g.fill();
+  g.fillStyle='#ff66aa';g.beginPath();g.ellipse(x+10,y+3,7,8,0,0,6.28);g.fill();
+  g.fillStyle='#111';g.beginPath();g.ellipse(x+10,y+3,4.5,5.5,0,0,6.28);g.fill();
+  fC(x+7.5,y+0,2.5,'#fff');
+  // Mouth – on forward side
   g.strokeStyle='#c07850';g.lineWidth=2;
-  g.beginPath();g.arc(x,y+14,6,.05,Math.PI-.05);g.stroke();
+  g.beginPath();g.arc(x+12,y+14,5,.1,Math.PI*.8);g.stroke();
   // Hair sides visible
   g.fillStyle='#8b3a10';
   g.beginPath();g.ellipse(x-22,y+6,5,12,.2,0,6.28);g.fill();
@@ -2173,15 +2179,18 @@ function drawOtter(x,y){
   g.fillStyle='#8b5a2b';g.beginPath();g.ellipse(x,y+4,16,15,0,0,6.28);g.fill();
   fC(x-13,y-8,6,'#7a4820');fC(x+13,y-8,6,'#7a4820');
   fC(x-13,y-8,3.5,'#c08040');fC(x+13,y-8,3.5,'#c08040');
-  g.fillStyle='#f5e8d0';g.beginPath();g.ellipse(x,y+6,11,10,0,0,6.28);g.fill();
-  fC(x-5,y+2,4.5,'#fff');fC(x+5,y+2,4.5,'#fff');
-  fC(x-5,y+2,3.5,'#3a2010');fC(x+5,y+2,3.5,'#3a2010');
-  fC(x-3.5,y+1,1.3,'#fff');fC(x+3.5,y+1,1.3,'#fff');
-  fC(x,y+8,3,'#3a2010');
+  // Muzzle – shifted forward (right)
+  g.fillStyle='#f5e8d0';g.beginPath();g.ellipse(x+7,y+7,10,9,0,0,6.28);g.fill();
+  // Far eye – small
+  fC(x-1,y+2,3,'#fff');fC(x-1,y+2,2.2,'#3a2010');fC(x-2,y+1,0.9,'#fff');
+  // Near eye – large
+  fC(x+8,y+1,4.5,'#fff');fC(x+8,y+1,3.5,'#3a2010');fC(x+6.5,y+0,1.3,'#fff');
+  // Nose – forward
+  fC(x+14,y+7,3,'#3a2010');
+  // Whiskers – right only
   g.strokeStyle='rgba(80,50,20,.55)';g.lineWidth=.9;
-  [-1,1].forEach(function(s){
-    g.beginPath();g.moveTo(x+s*3,y+8);g.lineTo(x+s*20,y+6);g.stroke();
-    g.beginPath();g.moveTo(x+s*3,y+9);g.lineTo(x+s*20,y+11);g.stroke();});
+  g.beginPath();g.moveTo(x+12,y+7);g.lineTo(x+28,y+5);g.stroke();
+  g.beginPath();g.moveTo(x+12,y+8);g.lineTo(x+28,y+10);g.stroke();
   g.save();g.translate(x+18,y+20);g.rotate(-.4);
   g.fillStyle='#f4c8a8';g.beginPath();g.arc(0,0,7,0,6.28);g.fill();
   g.strokeStyle='#d4886a';g.lineWidth=1;
@@ -2223,12 +2232,15 @@ function drawFlowerBunny(x,y){
   g.bezierCurveTo(x+12+_fbe*.8,y-26,x+10+_fbe*.8,y-42,x+7+_fbe*.5,y-41);
   g.bezierCurveTo(x+3,y-40,x+4,y-20,x+4,y-2);g.closePath();g.fill();
   g.fillStyle='#f5f5f5';g.beginPath();g.ellipse(x,y+4,15,14,0,0,6.28);g.fill();
-  fC(x-5,y+2,4,'#fff');fC(x+5,y+2,4,'#fff');
-  fC(x-5,y+2,3,'#44aaee');fC(x+5,y+2,3,'#44aaee');
-  fC(x-5,y+2,1.8,'#111');fC(x+5,y+2,1.8,'#111');
-  fC(x-3.5,y+1,1,'#fff');fC(x+3.5,y+1,1,'#fff');
-  g.fillStyle='#ff99bb';g.beginPath();g.ellipse(x,y+9,3.5,2.5,0,0,6.28);g.fill();
-  g.globalAlpha=.3;fC(x-10,y+8,6,'#ffaacc');fC(x+10,y+8,6,'#ffaacc');g.globalAlpha=1;
+  // Far eye – small
+  fC(x-1,y+2,2.5,'#fff');fC(x-1,y+2,1.8,'#44aaee');fC(x-1,y+2,1,'#111');
+  // Near eye – large
+  fC(x+8,y+1,4,'#fff');fC(x+8,y+1,3,'#44aaee');fC(x+8,y+1,1.8,'#111');
+  fC(x+6.5,y+0,1,'#fff');
+  // Nose – forward
+  g.fillStyle='#ff99bb';g.beginPath();g.ellipse(x+13,y+8,3.5,2.5,0,0,6.28);g.fill();
+  // Blush – forward cheek
+  g.globalAlpha=.3;fC(x+14,y+7,5,'#ffaacc');g.globalAlpha=1;
   var crownY=y-8;
   [[-12,0,'#ff6644'],[-6,-4,'#ffee44'],[0,-6,'#ff88cc'],[6,-4,'#ff6644'],[12,0,'#ffee44']].forEach(function(fl){
     var fx=x+fl[0],fy=crownY+fl[1],fc=fl[2];
@@ -2319,12 +2331,15 @@ function drawBeachCorgi(x,y){
   g.fillStyle='#ffccaa';
   g.beginPath();g.moveTo(x-13,y-3);g.lineTo(x-17,y-19);g.lineTo(x-7,y-9);g.closePath();g.fill();
   g.beginPath();g.moveTo(x+13,y-3);g.lineTo(x+17,y-19);g.lineTo(x+7,y-9);g.closePath();g.fill();
-  g.fillStyle='#f5c878';g.beginPath();g.ellipse(x,y+10,10,8,0,0,6.28);g.fill();
-  g.fillStyle='#2a1808';g.beginPath();g.ellipse(x,y+8,4.5,3.5,0,0,6.28);g.fill();
-  fC(x,y+9,1.8,'rgba(255,255,255,.4)');
-  fC(x-6,y+3,4,'#fff');fC(x+6,y+3,4,'#fff');
-  fC(x-6,y+3,3,'#2a1808');fC(x+6,y+3,3,'#2a1808');
-  fC(x-4.5,y+2,1.2,'#fff');fC(x+4.5,y+2,1.2,'#fff');
+  // Muzzle – forward
+  g.fillStyle='#f5c878';g.beginPath();g.ellipse(x+8,y+10,9,7,0,0,6.28);g.fill();
+  // Nose – forward
+  g.fillStyle='#2a1808';g.beginPath();g.ellipse(x+14,y+8,4.5,3.5,0,0,6.28);g.fill();
+  fC(x+14,y+9,1.8,'rgba(255,255,255,.4)');
+  // Far eye – small
+  fC(x-1,y+3,3,'#fff');fC(x-1,y+3,2.2,'#2a1808');fC(x-2,y+2,0.9,'#fff');
+  // Near eye – large
+  fC(x+8,y+2,4,'#fff');fC(x+8,y+2,3,'#2a1808');fC(x+6.5,y+1,1.2,'#fff');
   g.globalAlpha=.3;fC(x-13,y+8,6,'#ff9955');fC(x+13,y+8,6,'#ff9955');g.globalAlpha=1;
   g.fillStyle='#f7e040';g.beginPath();g.ellipse(x,y-8,20,5,0,0,6.28);g.fill();
   fC(x,y-12,13,'#f7e040');fC(x,y-18,10,'#f5d828');
@@ -2537,41 +2552,38 @@ function drawPikachu(x,y){
   g.fillStyle='#e8b820';
   g.beginPath();g.ellipse(x-8+_plL,y+42,8,4,_plL*0.03,0,6.28);g.fill();
   g.beginPath();g.ellipse(x+8+_plR,y+42,8,4,_plR*0.03,0,6.28);g.fill();
-  // Left ear
+  // Back ear (left = behind, smaller/angled back)
   g.fillStyle='#f8d030';
-  g.beginPath();g.moveTo(x-10,y+1);g.lineTo(x-17,y-24);g.lineTo(x-5,y-3);g.closePath();g.fill();
+  g.beginPath();g.moveTo(x-5,y+0);g.lineTo(x-10,y-22);g.lineTo(x+2,y-2);g.closePath();g.fill();
   g.fillStyle='#1a1a1a';
-  g.beginPath();g.moveTo(x-17,y-24);g.lineTo(x-12,y-16);g.lineTo(x-8,y-20);g.closePath();g.fill();
-  // Right ear
+  g.beginPath();g.moveTo(x-10,y-22);g.lineTo(x-6,y-14);g.lineTo(x-2,y-17);g.closePath();g.fill();
+  // Forward ear (right = front, tall and upright)
   g.fillStyle='#f8d030';
-  g.beginPath();g.moveTo(x+10,y+1);g.lineTo(x+17,y-24);g.lineTo(x+5,y-3);g.closePath();g.fill();
+  g.beginPath();g.moveTo(x+8,y+0);g.lineTo(x+14,y-25);g.lineTo(x+20,y-1);g.closePath();g.fill();
   g.fillStyle='#1a1a1a';
-  g.beginPath();g.moveTo(x+17,y-24);g.lineTo(x+12,y-16);g.lineTo(x+8,y-20);g.closePath();g.fill();
-  // Head
+  g.beginPath();g.moveTo(x+14,y-25);g.lineTo(x+16,y-16);g.lineTo(x+20,y-18);g.closePath();g.fill();
+  // Head – shifted slightly forward
   g.fillStyle='#f8d030';
-  g.beginPath();g.arc(x,y+7,17,0,6.28);g.fill();
-  // Eyes – shift toward leading side when running/jumping
-  var _pfs=_PA.fS;
+  g.beginPath();g.arc(x+3,y+7,17,0,6.28);g.fill();
+  // Far eye – small, near back of head
   g.fillStyle='#1a1a1a';
-  g.beginPath();g.ellipse(x-6+_pfs*.3,y+3,4,5,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+6+_pfs*.3,y+3,4,5,0,0,6.28);g.fill();
-  g.fillStyle='#ffffff';
-  g.beginPath();g.arc(x-7+_pfs*.3,y+2,1.8,0,6.28);g.fill();
-  g.beginPath();g.arc(x+5+_pfs*.3,y+2,1.8,0,6.28);g.fill();
-  // Nose
+  g.beginPath();g.ellipse(x-2,y+5,2.5,3,0,0,6.28);g.fill();
+  g.fillStyle='#ffffff';g.beginPath();g.arc(x-3,y+4,1,0,6.28);g.fill();
+  // Near eye – large, on forward side
   g.fillStyle='#1a1a1a';
-  g.beginPath();g.moveTo(x-1,y+8);g.lineTo(x+1,y+8);g.lineTo(x,y+10);g.closePath();g.fill();
+  g.beginPath();g.ellipse(x+10,y+4,4,5,0,0,6.28);g.fill();
+  g.fillStyle='#ffffff';g.beginPath();g.arc(x+8,y+3,1.8,0,6.28);g.fill();
+  // Nose – forward side
+  g.fillStyle='#1a1a1a';
+  g.beginPath();g.moveTo(x+16,y+8);g.lineTo(x+18,y+8);g.lineTo(x+17,y+10);g.closePath();g.fill();
   // Mouth
   g.strokeStyle='#8b5a10';g.lineWidth=1.2;g.lineCap='round';
-  g.beginPath();g.arc(x,y+10,3,0.15,Math.PI-0.15);g.stroke();
-  // Signature red cheek pouches!
+  g.beginPath();g.arc(x+16,y+11,3,0.1,Math.PI*0.8);g.stroke();
+  // Forward cheek pouch only
   g.fillStyle='rgba(235,60,30,.82)';
-  g.beginPath();g.ellipse(x-14,y+8,5,4,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+14,y+8,5,4,0,0,6.28);g.fill();
-  // Cheek sparkle
+  g.beginPath();g.ellipse(x+16,y+8,5,4,0,0,6.28);g.fill();
   g.fillStyle='rgba(255,180,160,.6)';
-  g.beginPath();g.arc(x-15,y+7,2,0,6.28);g.fill();
-  g.beginPath();g.arc(x+13,y+7,2,0,6.28);g.fill();
+  g.beginPath();g.arc(x+15,y+7,2,0,6.28);g.fill();
 }
 
 // ★ YOUNG SIMBA (The Lion King)
@@ -2760,55 +2772,45 @@ function drawStitch(x,y){
   // Big round head
   g.fillStyle='#4488dd';
   g.beginPath();g.arc(x,y+6,19,0,6.28);g.fill();
-  // Ears — large, rounded, sticking up
+  // Back ear (left = behind) – slightly tilted back, smaller
   g.fillStyle='#4488dd';
-  // Left ear
-  g.beginPath();g.ellipse(x-15,y-16,8,13,-0.35,0,6.28);g.fill();
-  // Right ear
-  g.beginPath();g.ellipse(x+15,y-16,8,13,0.35,0,6.28);g.fill();
-  // Ear inner pink
+  g.beginPath();g.ellipse(x-12,y-14,7,11,-0.55,0,6.28);g.fill();
   g.fillStyle='rgba(255,150,180,.6)';
-  g.beginPath();g.ellipse(x-15,y-16,4,8,-0.35,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+15,y-16,4,8,0.35,0,6.28);g.fill();
-  // Ear notch marks (jagged edge hint)
+  g.beginPath();g.ellipse(x-12,y-14,3.5,6,-0.55,0,6.28);g.fill();
   g.strokeStyle='#2255bb';g.lineWidth=1.2;
-  g.beginPath();g.moveTo(x-20,y-20);g.lineTo(x-17,y-24);g.lineTo(x-14,y-20);g.stroke();
-  g.beginPath();g.moveTo(x+20,y-20);g.lineTo(x+17,y-24);g.lineTo(x+14,y-20);g.stroke();
+  g.beginPath();g.moveTo(x-16,y-17);g.lineTo(x-14,y-21);g.lineTo(x-11,y-17);g.stroke();
+  // Forward ear (right = front) – tall, upright
+  g.fillStyle='#4488dd';
+  g.beginPath();g.ellipse(x+12,y-16,8,13,0.25,0,6.28);g.fill();
+  g.fillStyle='rgba(255,150,180,.6)';
+  g.beginPath();g.ellipse(x+12,y-16,4,8,0.25,0,6.28);g.fill();
+  g.strokeStyle='#2255bb';g.lineWidth=1.2;
+  g.beginPath();g.moveTo(x+16,y-20);g.lineTo(x+12,y-24);g.lineTo(x+8,y-20);g.stroke();
   // Face markings (darker stripe from nose to head top)
   g.strokeStyle='rgba(30,60,160,.25)';g.lineWidth=2;g.lineCap='round';
   g.beginPath();g.moveTo(x-8,y+2);g.bezierCurveTo(x-10,y-4,x-8,y-10,x-6,y-14);g.stroke();
   g.beginPath();g.moveTo(x+8,y+2);g.bezierCurveTo(x+10,y-4,x+8,y-10,x+6,y-14);g.stroke();
-  // Big black eyes
-  g.fillStyle='#0a0a18';
-  g.beginPath();g.ellipse(x-6,y+2,6,7,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+6,y+2,6,7,0,0,6.28);g.fill();
-  // Eye shine (blue tint like Stitch)
-  g.fillStyle='#2244cc';
-  g.beginPath();g.ellipse(x-6,y+1,4,5,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+6,y+1,4,5,0,0,6.28);g.fill();
-  g.fillStyle='#ffffff';
-  g.beginPath();g.arc(x-8,y-1,2,0,6.28);g.fill();
-  g.beginPath();g.arc(x+4,y-1,2,0,6.28);g.fill();
-  g.fillStyle='#0a0a18';
-  g.beginPath();g.ellipse(x-6,y+2,2.5,3,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+6,y+2,2.5,3,0,0,6.28);g.fill();
-  // Flat wide nose
-  g.fillStyle='#2255bb';
-  g.beginPath();g.ellipse(x,y+10,6,3.5,0,0,6.28);g.fill();
-  // Nostrils
+  // Far eye – small
+  g.fillStyle='#0a0a18';g.beginPath();g.ellipse(x-2,y+2,3.5,4,0,0,6.28);g.fill();
+  g.fillStyle='#2244cc';g.beginPath();g.ellipse(x-2,y+2,2.2,3,0,0,6.28);g.fill();
+  g.fillStyle='#ffffff';g.beginPath();g.arc(x-4,y+0,1.2,0,6.28);g.fill();
+  g.fillStyle='#0a0a18';g.beginPath();g.ellipse(x-2,y+2,1.3,1.8,0,0,6.28);g.fill();
+  // Near eye – large, forward side
+  g.fillStyle='#0a0a18';g.beginPath();g.ellipse(x+9,y+1,6,7,0,0,6.28);g.fill();
+  g.fillStyle='#2244cc';g.beginPath();g.ellipse(x+9,y+1,4,5,0,0,6.28);g.fill();
+  g.fillStyle='#ffffff';g.beginPath();g.arc(x+6,y-1,2,0,6.28);g.fill();
+  g.fillStyle='#0a0a18';g.beginPath();g.ellipse(x+9,y+1,2.5,3,0,0,6.28);g.fill();
+  // Nose – forward
+  g.fillStyle='#2255bb';g.beginPath();g.ellipse(x+14,y+10,6,3.5,0,0,6.28);g.fill();
   g.fillStyle='#1a3388';
-  g.beginPath();g.ellipse(x-3,y+10,1.8,1.2,0,0,6.28);g.fill();
-  g.beginPath();g.ellipse(x+3,y+10,1.8,1.2,0,0,6.28);g.fill();
-  // Mouth (big grin with teeth)
+  g.beginPath();g.ellipse(x+11,y+10,1.8,1.2,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+17,y+10,1.8,1.2,0,0,6.28);g.fill();
+  // Mouth – forward side grin
   g.fillStyle='#cc3333';
-  g.beginPath();g.arc(x,y+14,7,0.1,Math.PI-0.1);g.closePath();g.fill();
+  g.beginPath();g.arc(x+13,y+14,7,0.1,Math.PI-0.1);g.closePath();g.fill();
   g.fillStyle='#ffffff';
-  [-4,-1,2,5].forEach(function(tx){
-    g.beginPath();
-    g.moveTo(x+tx,y+14);
-    g.lineTo(x+tx+1.5,y+18);
-    g.lineTo(x+tx+3,y+14);
-    g.closePath();g.fill();
+  [-3,0,3,6].forEach(function(tx){
+    g.beginPath();g.moveTo(x+10+tx,y+14);g.lineTo(x+11.5+tx,y+18);g.lineTo(x+13+tx,y+14);g.closePath();g.fill();
   });
   // Antennae (small bumps on head top)
   g.fillStyle='#3366bb';
