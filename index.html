@@ -4212,9 +4212,11 @@ function loop(){requestAnimationFrame(loop);tick++;
 // ── INPUT ─────────────────────────────────────────────────────
 document.addEventListener('keydown',function(e){
   if(state==='title'&&(e.code==='Space'||e.code==='Enter')){state='select';}
-  if(state==='play'&&(e.code==='KeyP'||e.code==='Escape')){
+  if(state==='play'&&(e.code==='KeyP'||e.code==='Escape'||e.code==='Space')){
     _paused=!_paused;
     if(!_paused&&_pauseTempChar>=0){selectedChar=_pauseTempChar;_pauseTempChar=-1;}
+    if(e.code==='Space')e.preventDefault();
+    return;
   }
   keys[e.code]=true;
   if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();
