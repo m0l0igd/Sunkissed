@@ -2317,6 +2317,83 @@ function drawCrab(x,y){
   });
 }
 
+// ★ SEA STAR
+function drawSeaStar(x,y){
+  var cx=x, cy=y+10; // disc centre
+  // ── 5 arms, each pivoted & animated individually ──────────
+  var _ssi=_PA.idle*0.14;
+  // running deltas: arms 2+3 are legs, 1+4 are arms, 0 is top
+  var _ssD=[
+    _PA.running?0:Math.sin(tick*0.06+0)*_ssi,          // top arm
+    _PA.running? _PA.step*0.28:Math.sin(tick*0.06+1.26)*_ssi, // upper-right
+    _PA.running?-_PA.step*0.38:Math.sin(tick*0.06+2.51)*_ssi, // lower-right (leg)
+    _PA.running? _PA.step*0.38:Math.sin(tick*0.06+3.77)*_ssi, // lower-left  (leg)
+    _PA.running?-_PA.step*0.28:Math.sin(tick*0.06+5.03)*_ssi  // upper-left
+  ];
+  var baseAngs=[-1.5708,-0.3142,0.9425,2.1991,3.4558];
+  // Draw all 5 arms (back-to-front: draw, then disc on top)
+  for(var ai=0;ai<5;ai++){
+    g.save();
+    g.translate(cx,cy);
+    g.rotate(baseAngs[ai]+_ssD[ai]);
+    // Arm body – tapered teardrop pointing outward
+    g.fillStyle='#e86818';
+    g.beginPath();
+    g.moveTo(-8,2);g.bezierCurveTo(-9,10,-5,24,0,31);
+    g.bezierCurveTo(5,24,9,10,8,2);
+    g.bezierCurveTo(4,-1,0,0,-8,2);
+    g.closePath();g.fill();
+    // Underside lighter stripe
+    g.fillStyle='rgba(255,180,100,.35)';
+    g.beginPath();
+    g.moveTo(-3,4);g.bezierCurveTo(-3,12,-1,24,0,31);
+    g.bezierCurveTo(1,24,3,12,3,4);g.closePath();g.fill();
+    // Ridge line
+    g.strokeStyle='#b84808';g.lineWidth=1.2;g.lineCap='round';
+    g.beginPath();g.moveTo(0,3);g.lineTo(0,28);g.stroke();
+    // Bump texture (tiny circles along arm)
+    g.fillStyle='#c85010';
+    [8,14,20,26].forEach(function(dy2,bi){
+      var bw=6-bi*1.1;
+      g.beginPath();g.arc(0,dy2,bw*.5,0,6.28);g.fill();
+    });
+    // Arm tip highlight
+    g.fillStyle='rgba(255,220,150,.55)';
+    g.beginPath();g.arc(0,29,2.5,0,6.28);g.fill();
+    g.restore();
+  }
+  // ── Central disc ─────────────────────────────────────────
+  g.fillStyle='#e86818';
+  g.beginPath();g.arc(cx,cy,11,0,6.28);g.fill();
+  g.fillStyle='#f5a050';
+  g.beginPath();g.arc(cx,cy,8,0,6.28);g.fill();
+  // Texture ring dots
+  g.fillStyle='#c85010';
+  for(var di=0;di<8;di++){
+    var da=di/8*6.28;
+    g.beginPath();g.arc(cx+Math.cos(da)*6,cy+Math.sin(da)*6,1.4,0,6.28);g.fill();
+  }
+  // Eyes
+  g.fillStyle='#fff';
+  g.beginPath();g.ellipse(cx-4,cy-1,4,4.5,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(cx+4,cy-1,4,4.5,0,0,6.28);g.fill();
+  g.fillStyle='#1a0800';
+  g.beginPath();g.ellipse(cx-4,cy-1,2.5,3,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(cx+4,cy-1,2.5,3,0,0,6.28);g.fill();
+  g.fillStyle='#fff';
+  g.beginPath();g.arc(cx-5,cy-2.5,1.2,0,6.28);g.fill();
+  g.beginPath();g.arc(cx+3,cy-2.5,1.2,0,6.28);g.fill();
+  // Happy mouth
+  g.strokeStyle='#a03808';g.lineWidth=1.4;g.lineCap='round';
+  g.beginPath();g.arc(cx,cy+3,3.5,0.2,Math.PI-0.2);g.stroke();
+  // Blush
+  g.globalAlpha=.32;
+  g.fillStyle='#ff6633';
+  g.beginPath();g.ellipse(cx-8,cy+2,3.5,2.5,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(cx+8,cy+2,3.5,2.5,0,0,6.28);g.fill();
+  g.globalAlpha=1;
+}
+
 function drawTulipDuck(x,y){
   // Body - soft golden yellow
   g.fillStyle='#f5d040';g.beginPath();g.ellipse(x,y+34,17,14,-.1,0,6.28);g.fill();
@@ -2647,7 +2724,8 @@ var SECTIONS=[
    chars:[{name:'Otter',draw:drawOtter},{name:'Flower Bunny',draw:drawFlowerBunny},
           {name:'Flamingo',draw:drawFlamingo},{name:'Sea Turtle',draw:drawSeaTurtle},
          {name:'Beach Corgi',draw:drawBeachCorgi},
-          {name:'Crab',draw:drawCrab},{name:'Tulip Duck',draw:drawTulipDuck}]},
+          {name:'Crab',draw:drawCrab},{name:'Tulip Duck',draw:drawTulipDuck},
+          {name:'Sea Star',draw:drawSeaStar}]},
 ];
 // flat index lookup
 var CHARS_FLAT=[];SECTIONS.forEach(function(s){s.chars.forEach(function(c){CHARS_FLAT.push(c);});});
