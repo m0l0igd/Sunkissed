@@ -2237,13 +2237,86 @@ function drawTulipDuck(x,y){
   g.beginPath();g.moveTo(x+6,y+46);g.lineTo(x+14,y+46);g.lineTo(x+8,y+48);g.closePath();g.fill();
 }
 
+// ★ PIKACHU
+function drawPikachu(x,y){
+  // Lightning bolt tail (drawn first so body overlaps it)
+  g.fillStyle='#c89000';
+  g.beginPath();
+  g.moveTo(x+12,y+22);g.lineTo(x+20,y+10);g.lineTo(x+17,y+8);
+  g.lineTo(x+24,y-2);g.lineTo(x+28,y-6);g.lineTo(x+26,y+0);
+  g.lineTo(x+20,y+4);g.lineTo(x+24,y+14);g.lineTo(x+16,y+20);
+  g.closePath();g.fill();
+  g.fillStyle='#f8d030';
+  g.beginPath();
+  g.moveTo(x+12,y+22);g.lineTo(x+19,y+11);g.lineTo(x+16,y+9);
+  g.lineTo(x+22,y+0);g.lineTo(x+25,y-3);g.lineTo(x+23,y+2);
+  g.lineTo(x+18,y+6);g.lineTo(x+22,y+15);g.lineTo(x+15,y+20);
+  g.closePath();g.fill();
+  // Brown tail tip
+  g.fillStyle='#4a2800';
+  g.beginPath();g.moveTo(x+24,y-2);g.lineTo(x+28,y-6);
+  g.lineTo(x+26,y+0);g.closePath();g.fill();
+  // Body
+  g.fillStyle='#f8d030';
+  g.beginPath();g.ellipse(x,y+24,16,14,0,0,6.28);g.fill();
+  // Back stripes
+  g.strokeStyle='#8b5a10';g.lineWidth=2;g.lineCap='round';
+  g.beginPath();g.moveTo(x-4,y+13);g.lineTo(x-4,y+19);g.stroke();
+  g.beginPath();g.moveTo(x+3,y+12);g.lineTo(x+3,y+18);g.stroke();
+  // Arms
+  g.fillStyle='#f8d030';
+  g.beginPath();g.ellipse(x-18,y+22,5,4,0.4,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+18,y+22,5,4,-0.4,0,6.28);g.fill();
+  // Legs
+  g.beginPath();g.ellipse(x-8,y+35,6,8,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8,y+35,6,8,0,0,6.28);g.fill();
+  // Feet
+  g.fillStyle='#e8b820';
+  g.beginPath();g.ellipse(x-8,y+42,8,4,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+8,y+42,8,4,0,0,6.28);g.fill();
+  // Left ear
+  g.fillStyle='#f8d030';
+  g.beginPath();g.moveTo(x-10,y+1);g.lineTo(x-17,y-24);g.lineTo(x-5,y-3);g.closePath();g.fill();
+  g.fillStyle='#1a1a1a';
+  g.beginPath();g.moveTo(x-17,y-24);g.lineTo(x-12,y-16);g.lineTo(x-8,y-20);g.closePath();g.fill();
+  // Right ear
+  g.fillStyle='#f8d030';
+  g.beginPath();g.moveTo(x+10,y+1);g.lineTo(x+17,y-24);g.lineTo(x+5,y-3);g.closePath();g.fill();
+  g.fillStyle='#1a1a1a';
+  g.beginPath();g.moveTo(x+17,y-24);g.lineTo(x+12,y-16);g.lineTo(x+8,y-20);g.closePath();g.fill();
+  // Head
+  g.fillStyle='#f8d030';
+  g.beginPath();g.arc(x,y+7,17,0,6.28);g.fill();
+  // Eyes
+  g.fillStyle='#1a1a1a';
+  g.beginPath();g.ellipse(x-6,y+3,4,5,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+6,y+3,4,5,0,0,6.28);g.fill();
+  g.fillStyle='#ffffff';
+  g.beginPath();g.arc(x-7,y+2,1.8,0,6.28);g.fill();
+  g.beginPath();g.arc(x+5,y+2,1.8,0,6.28);g.fill();
+  // Nose
+  g.fillStyle='#1a1a1a';
+  g.beginPath();g.moveTo(x-1,y+8);g.lineTo(x+1,y+8);g.lineTo(x,y+10);g.closePath();g.fill();
+  // Mouth
+  g.strokeStyle='#8b5a10';g.lineWidth=1.2;g.lineCap='round';
+  g.beginPath();g.arc(x,y+10,3,0.15,Math.PI-0.15);g.stroke();
+  // Signature red cheek pouches!
+  g.fillStyle='rgba(235,60,30,.82)';
+  g.beginPath();g.ellipse(x-14,y+8,5,4,0,0,6.28);g.fill();
+  g.beginPath();g.ellipse(x+14,y+8,5,4,0,0,6.28);g.fill();
+  // Cheek sparkle
+  g.fillStyle='rgba(255,180,160,.6)';
+  g.beginPath();g.arc(x-15,y+7,2,0,6.28);g.fill();
+  g.beginPath();g.arc(x+13,y+7,2,0,6.28);g.fill();
+}
+
 // ── CHARACTER SECTIONS ────────────────────────────────────────
 var SECTIONS=[
   {label:'🏰 Disney',col:'#ff9ed2',
    chars:[{name:'Marie',draw:drawMarie},{name:'Angel',draw:drawAngel},
           {name:'Charlotte',draw:drawCharlotte},{name:'Pearl',draw:drawPearl},{name:'Piglet',draw:drawPiglet}]},
   {label:'⚡ Pokémon',col:'#aaffcc',
-   chars:[{name:'Sylveon',draw:drawSylveon},{name:'Mew',draw:drawMew}]},
+   chars:[{name:'Sylveon',draw:drawSylveon},{name:'Mew',draw:drawMew},{name:'Pikachu',draw:drawPikachu}]},
   {label:'✨ Other',col:'#ddaaff',
    chars:[{name:'Flora',draw:drawFlora},{name:'Glinda',draw:drawGlinda},{name:'Blossom',draw:drawBlossom}]},
   {label:'🏖️ Summer Crew',col:'#44ddff',
