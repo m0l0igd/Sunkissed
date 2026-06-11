@@ -1128,6 +1128,197 @@ function drawBG(){
     });
   }
 
+  // ★ STAGE 4 TROPICAL LAGOON — lagoon + palm trees
+  if(state==='play'&&currentLevel===3){
+    // Bright tropical sky
+    var tsky=g.createLinearGradient(0,0,0,FLOOR);
+    tsky.addColorStop(0,'#1a8fd0');tsky.addColorStop(.5,'#40c8b0');tsky.addColorStop(1,'#a8f0c0');
+    g.fillStyle=tsky;g.fillRect(0,0,W,FLOOR);
+    // Lagoon — a vivid turquoise pool in the foreground
+    var ly=FLOOR-28,lh=60;
+    var lg=g.createLinearGradient(0,ly,0,ly+lh);
+    lg.addColorStop(0,'#20e8d0');lg.addColorStop(1,'#08a090');
+    g.fillStyle=lg;g.fillRect(0,ly,W,lh);
+    // Lagoon shimmer ripples
+    g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=1.4;
+    for(var lri=0;lri<6;lri++){
+      var lrx=((lri*160+tick*1.2)%(W+80))-40;
+      g.beginPath();g.moveTo(lrx,ly+8+lri*8);
+      for(var lrj=0;lrj<=W+40;lrj+=18)
+        g.lineTo(lrx+lrj,ly+8+lri*8+Math.sin((lrj*.05+tick*.04+lri))*4);
+      g.stroke();
+    }
+    // Lagoon foam edge
+    g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;
+    g.beginPath();g.moveTo(0,ly);
+    for(var lfe=0;lfe<=W;lfe+=12)
+      g.lineTo(lfe,ly+Math.sin(lfe*.06+tick*.03)*3);
+    g.stroke();
+    // Tropical palm trees (world-space)
+    var tpalms=[200,700,1300,2000,2700,3400,4100,4700];
+    tpalms.forEach(function(wx){
+      var px2=scx(wx);if(px2<-80||px2>W+80)return;
+      var ph=70+((wx/300)%3)*18;
+      g.fillStyle='rgba(20,60,10,.88)';
+      // Trunk with slight lean
+      g.beginPath();
+      g.moveTo(px2-5,FLOOR);
+      g.bezierCurveTo(px2-3,FLOOR-ph*.4,px2+10,FLOOR-ph*.7,px2+6,FLOOR-ph);
+      g.bezierCurveTo(px2+4,FLOOR-ph,px2,FLOOR-ph,px2-2,FLOOR-ph);
+      g.bezierCurveTo(px2-10,FLOOR-ph*.7,px2+3,FLOOR-ph*.4,px2+5,FLOOR);
+      g.closePath();g.fill();
+      // Coconuts
+      g.fillStyle='#704010';
+      [[0,0],[8,-4],[-6,-2]].forEach(function(c){
+        g.beginPath();g.arc(px2+c[0]+3,FLOOR-ph+c[1]+4,4,0,6.28);g.fill();
+      });
+      // Fronds (bright tropical green)
+      var fdata=[[-1.2,-.5],[-0.8,-.9],[0,-.1,1.1],[.5,-.9],[1.1,-.5]];
+      fdata.forEach(function(f){
+        var fcol='#2a9a20';
+        g.strokeStyle=fcol;g.lineWidth=4;g.lineCap='round';
+        var fx=px2+6+f[0]*42,fy=FLOOR-ph+f[1]*36;
+        g.beginPath();g.moveTo(px2+6,FLOOR-ph);g.lineTo(fx,fy);g.stroke();
+        g.strokeStyle='#3ab030';g.lineWidth=2;
+        for(var li=-3;li<=3;li++){
+          var la=Math.atan2(fy-(FLOOR-ph),fx-(px2+6))+li*.18;
+          g.beginPath();g.moveTo(fx,fy);
+          g.lineTo(fx+Math.cos(la)*22,fy+Math.sin(la)*14);g.stroke();
+        }
+      });
+    });
+  }
+
+  // ★ STAGE 5 SHIPWRECK BAY — shipwreck in the background
+  if(state==='play'&&currentLevel===4){
+    // Moody overcast sky
+    var wsky=g.createLinearGradient(0,0,0,FLOOR);
+    wsky.addColorStop(0,'#1a2530');wsky.addColorStop(.6,'#2a4050');wsky.addColorStop(1,'#405060');
+    g.fillStyle=wsky;g.fillRect(0,0,W,FLOOR);
+    // Scattered cloud cover
+    g.globalAlpha=.45;
+    for(var wci=0;wci<8;wci++){
+      var wcx=((wci*170+tick*.4)%(W+200))-100;
+      var wcy=20+wci%4*18;
+      g.fillStyle='#506070';
+      g.beginPath();g.ellipse(wcx,wcy,90,22,0,0,6.28);g.fill();
+      g.beginPath();g.ellipse(wcx-40,wcy-8,55,18,0,0,6.28);g.fill();
+      g.beginPath();g.ellipse(wcx+50,wcy-5,60,16,0,0,6.28);g.fill();
+    }
+    g.globalAlpha=1;
+    // Shipwreck — world-anchored at x=1800, half-submerged
+    var shx=scx(1800),shy=FLOOR-85;
+    if(shx>-320&&shx<W+320){
+      g.save();g.translate(shx,shy);
+      // Hull (listing to starboard ~18 degrees)
+      g.rotate(.32);
+      g.fillStyle='#503820';
+      g.beginPath();g.moveTo(-120,0);g.lineTo(120,0);
+      g.lineTo(100,60);g.lineTo(-90,60);g.closePath();g.fill();
+      g.strokeStyle='#302010';g.lineWidth=2;
+      g.beginPath();g.moveTo(-120,0);g.lineTo(120,0);
+      g.lineTo(100,60);g.lineTo(-90,60);g.closePath();g.stroke();
+      // Deck planks
+      g.strokeStyle='rgba(80,50,20,.6)';g.lineWidth=1;
+      for(var dpi=-100;dpi<100;dpi+=14){
+        g.beginPath();g.moveTo(dpi,-2);g.lineTo(dpi,0);g.stroke();
+      }
+      // Broken mast
+      g.strokeStyle='#604030';g.lineWidth=8;g.lineCap='round';
+      g.beginPath();g.moveTo(20,0);g.lineTo(10,-100);g.stroke();
+      g.lineWidth=4;
+      g.beginPath();g.moveTo(10,-100);g.lineTo(40,-88);g.stroke();
+      g.lineWidth=2;
+      // Torn sail
+      g.fillStyle='rgba(180,170,150,.55)';
+      g.beginPath();g.moveTo(10,-98);g.lineTo(38,-86);
+      g.lineTo(28+Math.sin(tick*.05)*6,-50);g.lineTo(8,-60);g.closePath();g.fill();
+      // Rigging lines
+      g.strokeStyle='rgba(60,40,20,.7)';g.lineWidth=1;
+      [[10,-98,80,-5],[10,-60,-80,2]].forEach(function(l){
+        g.beginPath();g.moveTo(l[0],l[1]);g.lineTo(l[2],l[3]);g.stroke();
+      });
+      // Portholes
+      g.fillStyle='#202830';
+      [-60,-20,30,70].forEach(function(px3){
+        g.beginPath();g.arc(px3,28,7,0,6.28);g.fill();
+        g.strokeStyle='#604030';g.lineWidth=1.5;
+        g.beginPath();g.arc(px3,28,7,0,6.28);g.stroke();
+      });
+      g.restore();
+      // Seaweed clinging to hull
+      g.strokeStyle='rgba(30,80,40,.7)';g.lineWidth=2;g.lineCap='round';
+      for(var swi=0;swi<8;swi++){
+        var swx=shx-110+swi*30,swy=shy+55;
+        g.beginPath();g.moveTo(swx,swy);
+        g.bezierCurveTo(swx+Math.sin(tick*.06+swi)*8,swy+12,swx-4,swy+22,swx+Math.cos(tick*.05+swi)*6,swy+32);
+        g.stroke();
+      }
+    }
+  }
+
+  // ★ STAGE 6 STARFISH SANDS — starfish scattered on the sand and in the water
+  if(state==='play'&&currentLevel===5){
+    // Midnight beach sky
+    var stsky=g.createLinearGradient(0,0,0,FLOOR);
+    stsky.addColorStop(0,'#020510');stsky.addColorStop(.5,'#080c28');stsky.addColorStop(1,'#101840');
+    g.fillStyle=stsky;g.fillRect(0,0,W,FLOOR);
+    // Stars in the sky
+    g.fillStyle='#ffffff';
+    for(var sti=0;sti<80;sti++){
+      var stx2=(sti*137.5)%W,sty2=(sti*93.7)%(FLOOR*.75);
+      var stbr=Math.sin(tick*.04+sti*.8)*.5+.5;
+      g.globalAlpha=stbr*.9;
+      g.beginPath();g.arc(stx2,sty2,sti%3===0?1.5:0.8,0,6.28);g.fill();
+    }
+    g.globalAlpha=1;
+    // Moon
+    var mx=W*.78,my=FLOOR*.22;
+    var mglow=g.createRadialGradient(mx,my,0,mx,my,80);
+    mglow.addColorStop(0,'rgba(200,220,255,.18)');mglow.addColorStop(1,'rgba(150,180,255,0)');
+    g.fillStyle=mglow;g.fillRect(mx-80,my-80,160,160);
+    g.fillStyle='#dde8ff';g.beginPath();g.arc(mx,my,22,0,6.28);g.fill();
+    g.fillStyle='rgba(8,12,40,.5)';g.beginPath();g.arc(mx-6,my-4,17,0,6.28);g.fill();
+    // Bioluminescent water glow
+    var bwg=g.createLinearGradient(0,FLOOR,0,FLOOR+40);
+    bwg.addColorStop(0,'rgba(0,200,180,.3)');bwg.addColorStop(1,'rgba(0,100,120,0)');
+    g.fillStyle=bwg;g.fillRect(0,FLOOR,W,40);
+    // Starfish on the sand (world-space, drawn above floor later but preview here)
+    function drawStarfish(sfx,sfy,sfr,sfc){
+      g.fillStyle=sfc;
+      g.beginPath();
+      for(var sfi2=0;sfi2<5;sfi2++){
+        var sa1=sfi2/5*6.28-Math.PI/2,sa2=(sfi2+.5)/5*6.28-Math.PI/2;
+        sfi2===0?g.moveTo(sfx+Math.cos(sa1)*sfr,sfy+Math.sin(sa1)*sfr):
+                 g.lineTo(sfx+Math.cos(sa1)*sfr,sfy+Math.sin(sa1)*sfr);
+        g.lineTo(sfx+Math.cos(sa2)*sfr*.42,sfy+Math.sin(sa2)*sfr*.42);
+      }g.closePath();g.fill();
+      g.strokeStyle='rgba(0,0,0,.2)';g.lineWidth=.8;g.stroke();
+      g.fillStyle='rgba(255,255,255,.25)';
+      g.beginPath();g.arc(sfx,sfy,sfr*.2,0,6.28);g.fill();
+    }
+    var sfcols=['#e83040','#ff6050','#e84020','#ff8030','#c83050'];
+    var sfSpots=[180,380,620,850,1100,1400,1700,2050,2400,2800,3200,3600,4000,4400,4800,5200];
+    sfSpots.forEach(function(wx,si3){
+      var sfsx=scx(wx);if(sfsx<-40||sfsx>W+40)return;
+      var sfr2=10+si3%4*5;
+      drawStarfish(sfsx,FLOOR-sfr2*.4,sfr2,sfcols[si3%5]);
+    });
+    // Glowing starfish in the water
+    var wfSpots=[250,550,900,1300,1800,2300,2900,3500,4200,4900];
+    wfSpots.forEach(function(wx,wi2){
+      var wfsx=scx(wx);if(wfsx<-40||wfsx>W+40)return;
+      g.globalAlpha=.7+Math.sin(tick*.06+wi2)*.2;
+      drawStarfish(wfsx,FLOOR+30+wi2%3*15,8+wi2%3*4,sfcols[wi2%5]);
+      // Bioluminescent glow
+      var sfglow=g.createRadialGradient(wfsx,FLOOR+30+wi2%3*15,0,wfsx,FLOOR+30+wi2%3*15,20);
+      sfglow.addColorStop(0,'rgba(0,220,180,.3)');sfglow.addColorStop(1,'rgba(0,180,150,0)');
+      g.fillStyle=sfglow;g.globalAlpha=.5;
+      g.beginPath();g.arc(wfsx,FLOOR+30+wi2%3*15,20,0,6.28);g.fill();
+      g.globalAlpha=1;
+    });
+  }
+
   // —— Dreamy haze band near horizon
   var haze=g.createLinearGradient(0,FLOOR*.65,0,FLOOR);
   haze.addColorStop(0,'rgba(255,220,180,0)');
