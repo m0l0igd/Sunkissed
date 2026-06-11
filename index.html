@@ -2588,10 +2588,17 @@ function update(){
   if(P_speed>0)P_speed--;if(P_shield>0)P_shield--;if(P_magnet>0)P_magnet--;if(P_dblBlast>0)P_dblBlast--;
   if(P_dropping>0)P_dropping--;
   // Movement
-  var spd=P_speed>0?2.6:1.8;
-  if(keys['ArrowLeft']||keys['KeyA']){P.vx-=P.onGround?spd:spd*.6;P.dir=-1;}
-  if(keys['ArrowRight']||keys['KeyD']){P.vx+=P.onGround?spd:spd*.6;P.dir=1;}
-  if((keys['ArrowUp']||keys['KeyW']||keys['Space'])&&P.onGround){P.vy=-14;P.onGround=false;}
+  var spd=P_speed>0?1.8:1.1;
+  var maxSpd=P_speed>0?7:5;
+  if(keys['ArrowLeft']||keys['KeyA']){P.vx-=P.onGround?spd:spd*.55;P.dir=-1;}
+  if(keys['ArrowRight']||keys['KeyD']){P.vx+=P.onGround?spd:spd*.55;P.dir=1;}
+  // Friction when no direction pressed
+  var pressingX=(keys['ArrowLeft']||keys['KeyA']||keys['ArrowRight']||keys['KeyD']);
+  if(!pressingX)P.vx*=P.onGround?0.72:0.88;
+  // Hard clamp
+  P.vx=Math.max(-maxSpd,Math.min(maxSpd,P.vx));
+  if(Math.abs(P.vx)<0.15)P.vx=0;
+  if((keys['ArrowUp']||keys['KeyW']||keys['Space'])&&P.onGround){P.vy=-10;P.onGround=false;}
   if((keys['ArrowDown']||keys['KeyS'])&&P.onGround){P_dropping=18;}// drop through
   if(keys['KeyZ']&&P.blastCd<=0){
     pBlasts.push({x:P.x+P.w/2,y:P.y+P.h*.4,vx:P.dir*11,vy:-1,alive:true,bounces:0,rot:0,traveled:0});
