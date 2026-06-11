@@ -1319,6 +1319,147 @@ function drawBG(){
     });
   }
 
+  // ★ STAGE 7 MERMAID COVE — seashells and clams
+  if(state==='play'&&currentLevel===6){
+    // Soft dreamy sky for the cove
+    var mcsky=g.createLinearGradient(0,0,0,FLOOR);
+    mcsky.addColorStop(0,'#1a1060');mcsky.addColorStop(.45,'#5020a0');
+    mcsky.addColorStop(.8,'#c050a0');mcsky.addColorStop(1,'#f090c0');
+    g.fillStyle=mcsky;g.fillRect(0,0,W,FLOOR);
+    // Soft sparkle stars
+    for(var mci=0;mci<50;mci++){
+      var msx=(mci*173)%W,msy=(mci*107)%(FLOOR*.6);
+      g.globalAlpha=Math.sin(tick*.05+mci)*.4+.4;
+      g.fillStyle='#ffe8ff';
+      g.beginPath();g.arc(msx,msy,.9+mci%2,0,6.28);g.fill();
+    }
+    g.globalAlpha=1;
+
+    // --- draw one spiral/conch shell ---
+    function drawConch(cx,cy,sz,col){
+      g.save();g.translate(cx,cy);
+      // Body coil
+      g.fillStyle=col;
+      g.beginPath();g.ellipse(0,0,sz,sz*.62,0,0,6.28);g.fill();
+      // Spiral ridges
+      g.strokeStyle='rgba(0,0,0,.18)';g.lineWidth=.9;
+      for(var ri3=1;ri3<=4;ri3++){
+        g.beginPath();g.ellipse(0,0,sz*ri3*.24,sz*ri3*.15,0,0,Math.PI);g.stroke();
+      }
+      // Point
+      g.fillStyle=col;
+      g.beginPath();g.moveTo(sz*.7,0);g.lineTo(sz*1.3,-sz*.3);g.lineTo(sz*.8,-sz*.08);g.closePath();g.fill();
+      // Lip
+      g.strokeStyle='rgba(255,255,255,.45)';g.lineWidth=1.5;
+      g.beginPath();g.ellipse(0,sz*.1,sz*.55,sz*.28,-0.3,Math.PI,0);g.stroke();
+      // Highlight
+      g.fillStyle='rgba(255,255,255,.3)';
+      g.beginPath();g.ellipse(-sz*.2,-sz*.18,sz*.22,sz*.1,-0.4,0,6.28);g.fill();
+      g.restore();
+    }
+
+    // --- draw one scallop/fan shell ---
+    function drawScallop(cx,cy,sz,col){
+      g.save();g.translate(cx,cy);
+      g.fillStyle=col;
+      // Base half-circle
+      g.beginPath();g.arc(0,0,sz,Math.PI,0);g.closePath();g.fill();
+      // Fan ribs
+      g.strokeStyle='rgba(0,0,0,.15)';g.lineWidth=1;
+      for(var sfi3=0;sfi3<=6;sfi3++){
+        var sa=Math.PI-sfi3*(Math.PI/6);
+        g.beginPath();g.moveTo(0,0);
+        g.lineTo(Math.cos(sa)*sz,Math.sin(sa)*sz);g.stroke();
+      }
+      // Hinge bump
+      g.fillStyle='rgba(0,0,0,.15)';
+      g.beginPath();g.arc(0,0,sz*.18,0,6.28);g.fill();
+      g.fillStyle='rgba(255,255,255,.35)';
+      g.beginPath();g.ellipse(-sz*.25,-sz*.35,sz*.22,sz*.1,-.5,0,6.28);g.fill();
+      g.restore();
+    }
+
+    // --- draw a clam (open or closed) ---
+    function drawClam(cx,cy,sz,col,open){
+      g.save();g.translate(cx,cy);
+      var openAng=open?Math.min(.7,open*.7):0;
+      // Bottom shell
+      g.fillStyle=col;
+      g.beginPath();g.arc(0,0,sz,0,Math.PI);g.closePath();g.fill();
+      g.strokeStyle='rgba(0,0,0,.15)';g.lineWidth=1;
+      g.beginPath();g.arc(0,0,sz,0,Math.PI);g.closePath();g.stroke();
+      // Ribs on bottom
+      for(var ci2=0;ci2<=5;ci2++){
+        var ca=Math.PI*ci2/5;
+        g.strokeStyle='rgba(0,0,0,.1)';g.lineWidth=.8;
+        g.beginPath();g.moveTo(0,0);
+        g.lineTo(Math.cos(ca)*sz,Math.sin(ca)*sz);g.stroke();
+      }
+      // Top shell (rotated open)
+      g.save();g.rotate(-openAng);
+      g.fillStyle=col;
+      g.beginPath();g.arc(0,0,sz,Math.PI,0,true);g.closePath();g.fill();
+      g.strokeStyle='rgba(0,0,0,.15)';g.lineWidth=1;
+      g.beginPath();g.arc(0,0,sz,Math.PI,0,true);g.closePath();g.stroke();
+      for(var ci3=0;ci3<=5;ci3++){
+        var ca2=Math.PI+Math.PI*ci3/5;
+        g.strokeStyle='rgba(0,0,0,.1)';g.lineWidth=.8;
+        g.beginPath();g.moveTo(0,0);
+        g.lineTo(Math.cos(ca2)*sz,Math.sin(ca2)*sz);g.stroke();
+      }
+      g.restore();
+      // Pearl inside if open enough
+      if(open>.3){
+        g.globalAlpha=Math.min(1,(open-.3)*3);
+        var pg=g.createRadialGradient(-sz*.1,-sz*.3,0,-sz*.1,-sz*.3,sz*.25);
+        pg.addColorStop(0,'#ffffff');pg.addColorStop(.5,'#e8d8f0');pg.addColorStop(1,'rgba(200,180,220,.4)');
+        g.fillStyle=pg;
+        g.beginPath();g.arc(-sz*.1,-sz*.28,sz*.22,0,6.28);g.fill();
+        g.globalAlpha=1;
+      }
+      g.restore();
+    }
+
+    // Scatter shells across world on the sand
+    var shellCols=['#f0c0a0','#e8b090','#ffd0b0','#f8a8b0','#e890a0','#ffc0d0'];
+    var clamCols=['#d0b0e0','#c098d0','#b888c8','#e0c8f0'];
+    var shellSpots=[120,300,480,700,920,1150,1400,1680,1960,2260,2580,2920,3280,3660,4060,4480,4920,5380];
+    shellSpots.forEach(function(wx,shi){
+      var ssx2=scx(wx);if(ssx2<-50||ssx2>W+50)return;
+      var stype=shi%3; // 0=conch, 1=scallop, 2=clam
+      var ssz=10+shi%4*5;
+      if(stype===0){
+        drawConch(ssx2,FLOOR-ssz*.3,ssz,shellCols[shi%6]);
+      } else if(stype===1){
+        g.save();g.translate(ssx2,FLOOR);g.scale(1,-1);
+        drawScallop(0,0,ssz,shellCols[(shi+2)%6]);
+        g.restore();
+      } else {
+        // Clam: animate slightly open/closed
+        var openAmt=Math.sin(tick*.04+shi*1.3)*.5+.5;
+        g.save();g.translate(ssx2,FLOOR);g.rotate(Math.PI);
+        drawClam(0,0,ssz,clamCols[shi%4],openAmt);
+        g.restore();
+      }
+    });
+
+    // Extra clams in the water (fully open, pearls glowing)
+    var waterClams=[200,600,1100,1700,2400,3100,3900,4700];
+    waterClams.forEach(function(wx,wci2){
+      var wcsx=scx(wx);if(wcsx<-50||wcsx>W+50)return;
+      g.save();g.translate(wcsx,FLOOR+25+wci2%3*12);g.rotate(Math.PI);
+      drawClam(0,0,12+wci2%3*4,clamCols[wci2%4],0.85);
+      g.restore();
+      // Pearl glow
+      var pgl=g.createRadialGradient(wcsx,FLOOR+22+wci2%3*12,0,wcsx,FLOOR+22+wci2%3*12,18);
+      var pgbr=Math.sin(tick*.07+wci2)*.3+.5;
+      pgl.addColorStop(0,'rgba(220,180,255,'+pgbr+')');
+      pgl.addColorStop(1,'rgba(180,100,220,0)');
+      g.fillStyle=pgl;
+      g.beginPath();g.arc(wcsx,FLOOR+22+wci2%3*12,18,0,6.28);g.fill();
+    });
+  }
+
   // —— Dreamy haze band near horizon
   var haze=g.createLinearGradient(0,FLOOR*.65,0,FLOOR);
   haze.addColorStop(0,'rgba(255,220,180,0)');
